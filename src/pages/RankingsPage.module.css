@@ -1,0 +1,352 @@
+.rankLayout {
+  display: grid;
+  grid-template-columns: var(--split-layout-sidebar-width) minmax(0, 1fr);
+  gap: var(--split-layout-gap);
+  align-items: stretch;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+.sidebar {
+  max-height: none;
+  overflow: visible;
+  display: grid;
+  gap: 12px;
+  padding-right: 0;
+}
+
+.sidebarCard {
+  border: 1px solid rgba(71, 84, 145, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 22px rgba(51, 69, 122, 0.08);
+  padding: 16px;
+}
+
+.sidebarTitle {
+  margin: 0 0 10px;
+  color: #2e406f;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sidebarActions {
+  display: grid;
+  gap: 8px;
+}
+
+.sidebarActions :global(.button) {
+  width: 100%;
+}
+
+.boardList {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.boardButton {
+  width: 100%;
+  border: 1px solid rgba(112, 126, 174, 0.24);
+  border-radius: 11px;
+  background: rgba(251, 252, 255, 0.82);
+  color: #2f3f67;
+  text-align: left;
+  display: grid;
+  gap: 3px;
+  padding: 10px;
+  cursor: pointer;
+  transition: border-color 0.16s ease;
+}
+
+.boardButton:hover {
+  border-color: rgba(58, 86, 167, 0.36);
+}
+
+.boardButton strong {
+  font-size: 0.82rem;
+  line-height: 1.3;
+}
+
+.boardButton span {
+  font-size: 0.75rem;
+  color: #536289;
+}
+
+.boardButtonActive {
+  border-color: rgba(56, 89, 170, 0.34);
+  background: rgba(234, 242, 255, 0.95);
+}
+
+.sidebarStats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.sidebarStats li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid rgba(73, 95, 158, 0.16);
+  border-radius: 10px;
+  background: rgba(246, 250, 255, 0.85);
+  padding: 9px 10px;
+  color: #445071;
+  font-size: 0.78rem;
+}
+
+.sidebarStats strong {
+  text-align: right;
+  font-size: 0.82rem;
+  color: #27498f;
+  line-height: 1.25;
+}
+
+.mainColumn {
+  min-width: 0;
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+  display: grid;
+  gap: 18px;
+}
+
+.headerBar {
+  display: grid;
+  gap: 12px;
+}
+
+.insightChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.insightChip {
+  border: 1px solid rgba(72, 91, 154, 0.2);
+  border-radius: 999px;
+  background: rgba(245, 249, 255, 0.95);
+  color: #314573;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 5px 10px;
+}
+
+.insightChipTop {
+  border-color: rgba(196, 121, 14, 0.34);
+  background: rgba(255, 247, 232, 0.94);
+  color: #95580a;
+}
+
+.insightChipBoard {
+  border-color: rgba(80, 101, 181, 0.24);
+  background: rgba(236, 242, 255, 0.92);
+  color: #2c4680;
+}
+
+.filterBar {
+  display: grid !important;
+  grid-template-columns: minmax(260px, 1.25fr) minmax(220px, 1fr) minmax(170px, 0.7fr) minmax(170px, 0.7fr);
+  align-items: end;
+  gap: 14px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.86), rgba(247, 251, 255, 0.8));
+  border: 1px solid rgba(71, 84, 145, 0.16);
+  border-radius: 14px;
+  padding: 14px;
+  overflow-x: auto;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.filterBar label {
+  min-width: 0;
+}
+
+.topGrid {
+  margin-top: 2px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.topCard {
+  position: relative;
+  overflow: hidden;
+  min-height: 182px;
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  border-radius: 18px !important;
+  box-shadow: 0 14px 26px rgba(46, 62, 112, 0.14) !important;
+  animation: rankFadeIn 380ms ease both;
+}
+
+.topCard::after {
+  content: '';
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.56), transparent 68%);
+}
+
+.topCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 0 40%, rgba(255, 255, 255, 0.38) 50%, transparent 60% 100%);
+  transform: translateX(-120%);
+  transition: transform 0.5s ease;
+}
+
+.topCard:hover::before {
+  transform: translateX(120%);
+}
+
+.topRankBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(72, 91, 154, 0.22);
+  background: rgba(255, 255, 255, 0.92);
+  color: #405078;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 3px 7px;
+}
+
+.topScore {
+  font-size: clamp(1rem, 1.3vw, 1.16rem);
+  font-weight: 800;
+  color: #243460;
+}
+
+.tablePanel {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(244, 249, 255, 0.88));
+  border: 1px solid rgba(71, 84, 145, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+.tablePanel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(94, 153, 255, 0.08), transparent 33%),
+    radial-gradient(circle at 88% 80%, rgba(102, 201, 177, 0.06), transparent 30%);
+  pointer-events: none;
+}
+
+.tableHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tableHeader > div {
+  display: grid;
+  gap: 4px;
+}
+
+.rankTableWrap {
+  position: relative;
+  z-index: 1;
+}
+
+.rankTable :global(thead th) {
+  letter-spacing: 0.02em;
+}
+
+.rankTable :global(tbody tr) {
+  transition: background-color 0.16s ease, transform 0.16s ease;
+}
+
+.rankTable :global(tbody tr:hover) {
+  transform: translateY(-1px);
+}
+
+.rankBadge {
+  min-width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(84, 101, 158, 0.24);
+  background: rgba(246, 250, 255, 0.94);
+  color: #2f4674;
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+@media (max-width: 1400px) {
+  .rankLayout {
+    grid-template-columns: var(--split-layout-sidebar-width-narrow) minmax(0, 1fr);
+    gap: var(--split-layout-gap-narrow);
+  }
+
+  .filterBar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .rankLayout {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .sidebar,
+  .mainColumn {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .filterBar {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+}
+
+.rank1 {
+  border-color: rgba(193, 131, 9, 0.35);
+  background: rgba(255, 243, 217, 0.95);
+  color: #925608;
+}
+
+.rank2 {
+  border-color: rgba(114, 126, 152, 0.3);
+  background: rgba(239, 243, 250, 0.95);
+  color: #4b5673;
+}
+
+.rank3 {
+  border-color: rgba(150, 93, 53, 0.3);
+  background: rgba(249, 239, 232, 0.95);
+  color: #7c4a28;
+}
+
+@keyframes rankFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

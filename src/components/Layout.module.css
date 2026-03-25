@@ -1,0 +1,242 @@
+.appShell {
+  width: min(1480px, calc(100% - clamp(28px, 4vw, 96px)));
+  margin: 0 auto;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(18px, 2.4vw, 30px);
+  padding: 0 0 26px;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid #d8dde6;
+  background: #f4f5f7;
+  min-height: 84px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  padding: 0 clamp(18px, 2.2vw, 32px);
+  border-radius: 0 0 16px 16px;
+}
+
+.leftCluster {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brandWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brandBadge {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: linear-gradient(145deg, #0f6d79, #2b61df);
+}
+
+.brandTitle {
+  margin: 0;
+  color: #1960c5;
+  font-size: 1.55rem;
+  font-weight: 800;
+  font-family: var(--font-emphasis);
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.topnav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 0 4px;
+}
+
+.menuItem {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #1e2438;
+  font-size: 0.98rem;
+  font-weight: 700;
+  font-family: var(--font-emphasis);
+  white-space: nowrap;
+  padding: 9px 13px;
+  border-radius: 10px;
+}
+
+.menuItem:hover {
+  color: #1a4da5;
+  background: rgba(234, 241, 255, 0.78);
+}
+
+.menuItemActive {
+  color: #1b4cab;
+  background: rgba(229, 238, 255, 0.9);
+}
+
+.rightControls {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.inboxButton {
+  border: 1px solid rgba(43, 97, 223, 0.28);
+  border-radius: 999px;
+  background: rgba(240, 246, 255, 0.95);
+  color: #214187;
+  font-size: 0.86rem;
+  font-weight: 700;
+  font-family: var(--font-emphasis);
+  padding: 8px 11px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.unreadBadge {
+  border-radius: 999px;
+  background: #c72a44;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 6px;
+}
+
+.inboxPanel {
+  position: absolute;
+  right: 190px;
+  top: calc(100% + 8px);
+  width: 320px;
+  max-height: 360px;
+  overflow: auto;
+  border: 1px solid rgba(71, 84, 145, 0.24);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 18px 40px rgba(30, 47, 91, 0.18);
+  padding: 12px;
+}
+
+.inboxPanel h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-family: var(--font-emphasis);
+}
+
+.inboxPanel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.inboxPanel li {
+  border: 1px solid rgba(71, 84, 145, 0.16);
+  border-radius: 10px;
+  background: rgba(248, 251, 255, 0.88);
+  padding: 8px;
+}
+
+.msgMeta {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #586489;
+}
+
+.msgContent {
+  margin: 4px 0 0;
+  color: #252f4e;
+  font-size: 0.84rem;
+}
+
+.emptyInbox {
+  margin: 0;
+  color: #5f698c;
+  font-size: 0.84rem;
+}
+
+.quickJump {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.quickJump input {
+  width: 228px;
+  border: 1px solid rgba(71, 84, 145, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 10px 13px;
+  font: inherit;
+}
+
+.quickJump input:focus {
+  outline: none;
+  border-color: rgba(43, 97, 223, 0.56);
+  box-shadow: 0 0 0 3px rgba(43, 97, 223, 0.12);
+}
+
+.pageMain {
+  padding: clamp(10px, 1.5vw, 18px) clamp(16px, 2.2vw, 40px) 0;
+}
+
+.footer {
+  color: var(--muted);
+  font-size: 0.83rem;
+  padding: 0 clamp(14px, 1.8vw, 30px) 10px;
+}
+
+@media (max-width: 1200px) {
+  .brandTitle {
+    font-size: 1.35rem;
+  }
+
+  .topnav {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 960px) {
+  .appShell {
+    width: min(1720px, calc(100% - 18px));
+  }
+
+  .topbar {
+    padding: 0 14px;
+    min-height: 76px;
+  }
+
+  .brandTitle {
+    font-size: 1.12rem;
+  }
+
+  .menuItem {
+    padding: 8px 10px;
+    font-size: 0.92rem;
+  }
+
+  .quickJump input {
+    width: 170px;
+  }
+}
