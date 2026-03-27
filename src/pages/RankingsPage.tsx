@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { EmptyState, ErrorState, LoadingState } from '../components/StateBlocks'
 import { MainSidebarSection } from '../maincomponent/MainSidebarSection'
+import { MainInsightChips } from '../maincomponent/MainInsightChips'
 import { MainStatList } from '../maincomponent/MainStatList'
 import { useAppData } from '../store/AppDataContext'
 import styles from './RankingsPage.module.css'
@@ -22,7 +23,6 @@ function isWithinPeriod(value: string, period: string) {
 
 export function RankingsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [copiedView, setCopiedView] = useState(false)
   const { loading, error, refresh, leaderboards, hackathons } = useAppData()
   const boardSlug = searchParams.get('board') || 'all'
   const period = searchParams.get('period') || 'all'
@@ -94,51 +94,73 @@ export function RankingsPage() {
     setSearchParams({})
   }
 
-  async function copyCurrentView() {
-    if (typeof window === 'undefined' || typeof navigator === 'undefined' || !navigator.clipboard) return
-    const query = searchParams.toString()
-    const targetUrl = `${window.location.origin}${window.location.pathname}${query ? `?${query}` : ''}`
-    try {
-      await navigator.clipboard.writeText(targetUrl)
-      setCopiedView(true)
-      window.setTimeout(() => setCopiedView(false), 1400)
-    } catch {
-      setCopiedView(false)
-    }
-  }
-
   return (
     <section className={styles.rankLayout}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarSticky}>
-          <MainSidebarSection title="빠른 필터">
+          <MainSidebarSection title="지금 포커스">
+            <MainStatList
+              items={[
+                { label: '표시 엔트리', value: entries.length },
+                { label: '최고 점수', value: topScore },
+                { label: '평균 점수', value: avgScore },
+                { label: '활성 필터', value: activeFilterCount },
+              ]}
+              className={styles.sidebarStats}
+            />
+          </MainSidebarSection>
+
+          <MainSidebarSection title="빠른 제어">
             <div className={styles.sidebarActions}>
-              <button type="button" className="button secondary" onClick={() => updateQuery('period', 'all')}>
+              <button
+                type="button"
+                className={`${styles.controlButton} ${period === 'all' ? styles.controlButtonActive : ''}`}
+                onClick={() => updateQuery('period', 'all')}
+              >
                 전체 기간
               </button>
-              <button type="button" className="button secondary" onClick={() => updateQuery('period', '7d')}>
+              <button
+                type="button"
+                className={`${styles.controlButton} ${period === '7d' ? styles.controlButtonActive : ''}`}
+                onClick={() => updateQuery('period', '7d')}
+              >
                 최근 7일
               </button>
-              <button type="button" className="button secondary" onClick={() => updateQuery('period', '30d')}>
+              <button
+                type="button"
+                className={`${styles.controlButton} ${period === '30d' ? styles.controlButtonActive : ''}`}
+                onClick={() => updateQuery('period', '30d')}
+              >
                 최근 30일
               </button>
-              <button type="button" className="button ghost" onClick={() => updateQuery('sort', 'score')}>
+              <button
+                type="button"
+                className={`${styles.controlButton} ${sortBy === 'score' ? styles.controlButtonActive : ''}`}
+                onClick={() => updateQuery('sort', 'score')}
+              >
                 점수순 보기
               </button>
-              <button type="button" className="button ghost" onClick={resetFilters}>
-                필터 전체 해제
+              <button
+                type="button"
+                className={`${styles.controlButton} ${sortBy === 'latest' ? styles.controlButtonActive : ''}`}
+                onClick={() => updateQuery('sort', 'latest')}
+              >
+                최신 제출순
+              </button>
+              <button type="button" className={styles.controlButton} onClick={resetFilters}>
+                전체 필터 초기화
               </button>
             </div>
           </MainSidebarSection>
 
-          <MainSidebarSection title="보드 바로가기">
+          <MainSidebarSection title="보드 스위처">
             <button
               type="button"
               className={`${styles.boardButton} ${boardSlug === 'all' ? styles.boardButtonActive : ''}`}
               onClick={() => updateQuery('board', 'all')}
             >
-              <strong>최근 업데이트 기준</strong>
-              <span>전체 보드 중 최신 기준</span>
+              <strong>전체 보드 기준</strong>
+              <span>최신 업데이트 자동 선택</span>
             </button>
             <div className={styles.boardList}>
               {quickBoards.map((board) => (
@@ -158,10 +180,9 @@ export function RankingsPage() {
           <MainSidebarSection title="현재 컨텍스트">
             <MainStatList
               items={[
-                { label: '표시 엔트리', value: entries.length },
-                { label: '최고 점수', value: topScore },
-                { label: '평균 점수', value: avgScore },
+                { label: '선택 보드', value: selectedBoardLabel },
                 { label: '업데이트', value: formatDate(selected?.updatedAt) },
+                { label: 'TOP1 팀', value: top3[0]?.teamName || '-' },
               ]}
               className={styles.sidebarStats}
             />
@@ -184,14 +205,15 @@ export function RankingsPage() {
 
       <div className={`stack-lg ${styles.mainColumn}`}>
         <header className={`page-header ${styles.headerBar}`}>
-          <div className={styles.insightChips}>
-            <span className={styles.insightChip}>표시 엔트리 {entries.length}</span>
-            <span className={`${styles.insightChip} ${styles.insightChipTop}`}>최고 점수 {topScore}</span>
-            <span className={styles.insightChip}>평균 점수 {avgScore}</span>
-            <span className={`${styles.insightChip} ${styles.insightChipBoard}`}>
-              현재 보드 {selectedBoardLabel}
-            </span>
-          </div>
+          <MainInsightChips
+            className={styles.insightChips}
+            items={[
+              { label: `표시 엔트리 ${entries.length}` },
+              { label: `최고 점수 ${topScore}`, tone: 'success' },
+              { label: `평균 점수 ${avgScore}` },
+              { label: `현재 보드 ${selectedBoardLabel}`, tone: 'accent' },
+            ]}
+          />
         </header>
 
         <section className={`controls ${styles.filterBar}`}>
@@ -232,9 +254,6 @@ export function RankingsPage() {
           </label>
           <button className="button ghost align-end" type="button" onClick={resetFilters}>
             필터 초기화
-          </button>
-          <button className="button secondary align-end" type="button" onClick={copyCurrentView}>
-            {copiedView ? '뷰 링크 복사됨' : '현재 뷰 링크 복사'}
           </button>
         </section>
 

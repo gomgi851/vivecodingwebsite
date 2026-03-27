@@ -6,7 +6,8 @@
   width: 100%;
   min-width: 0;
   min-height: 100vh;
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 .skipLink {
@@ -137,8 +138,14 @@
 .pageMain {
   width: min(100%, var(--topbar-content-width));
   margin: 0 auto;
-  min-height: calc(100vh - var(--topbar-height));
+  flex: 1 1 auto;
+  min-height: 0;
   padding: calc(var(--topbar-height) + var(--content-top-gap)) var(--page-gutter) 24px;
+}
+
+.pageMainHome {
+  min-height: 0;
+  padding-bottom: 0;
 }
 
 .footer {

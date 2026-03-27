@@ -2,12 +2,22 @@
   display: grid;
   grid-template-columns: var(--split-layout-sidebar-width) minmax(0, 1fr);
   gap: var(--split-layout-gap);
-  align-items: start;
+  align-items: stretch;
+  height: calc(100vh - var(--topbar-height) - var(--content-top-gap) - 24px);
+  min-height: 0;
 }
 
 .sidebar {
-  position: sticky;
-  top: calc(var(--split-layout-sidebar-top) + 20px);
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  min-height: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .sidebarSticky {
@@ -39,6 +49,29 @@
 
 .sidebarActions :global(.button) {
   width: 100%;
+}
+
+.controlButton {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(109, 129, 187, 0.35);
+  background: rgba(255, 255, 255, 0.98);
+  color: #233861;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+}
+
+.controlButton:hover {
+  border-color: rgba(56, 89, 170, 0.42);
+}
+
+.controlButtonActive {
+  border-color: rgba(43, 97, 223, 0.6);
+  background: #2b61df;
+  color: #ffffff;
 }
 
 .boardList {
@@ -110,9 +143,72 @@
 
 .mainColumn {
   min-width: 0;
-  overflow: visible;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
   display: grid;
   gap: 22px;
+  align-content: start;
+}
+
+.headerBar {
+  border: 1px solid rgba(71, 84, 145, 0.16);
+  border-radius: 16px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(244, 249, 255, 0.9));
+  padding: 14px 16px 12px;
+  box-shadow:
+    0 10px 22px rgba(31, 52, 99, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  position: relative;
+  overflow: visible;
+}
+
+.headerBar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #2b61df, #6f8ff2 55%, #bcd0ff);
+}
+
+.insightChips {
+  margin-top: 0;
+}
+
+.resultMeta {
+  border: 1px solid rgba(71, 84, 145, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 12px 14px;
+}
+
+.resultMeta p {
+  margin: 0;
+}
+
+.resultMeta p + p {
+  margin-top: 6px;
+}
+
+.activeFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.activeFilterChip {
+  border: 1px solid rgba(63, 116, 194, 0.28);
+  border-radius: 999px;
+  background: rgba(231, 242, 255, 0.95);
+  color: #1f4f93;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 11px;
+  cursor: pointer;
 }
 
 .header {
@@ -193,6 +289,33 @@
   border: 1px solid rgba(71, 84, 145, 0.16);
   border-radius: 14px;
   padding: 14px;
+}
+
+.topGrid {
+  gap: 16px;
+}
+
+.topCard {
+  position: relative;
+  display: grid;
+  gap: 8px;
+}
+
+.topRankBadge {
+  width: fit-content;
+  border: 1px solid rgba(56, 89, 170, 0.35);
+  border-radius: 999px;
+  background: rgba(234, 242, 255, 0.95);
+  color: #24478f;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 4px 9px;
+}
+
+.topScore {
+  margin: 0;
+  color: #0f5d55;
+  font-weight: 800;
 }
 
 .filterBar label {
@@ -344,22 +467,60 @@
   font-weight: 800;
 }
 
-.rank1 .rankBadge {
+.rank1 {
   border-color: rgba(141, 75, 20, 0.35);
   background: rgba(255, 243, 217, 0.95);
   color: #8b4e12;
 }
 
-.rank2 .rankBadge {
+.rank2 {
   border-color: rgba(95, 106, 123, 0.3);
   background: rgba(238, 242, 246, 0.95);
   color: #556173;
 }
 
-.rank3 .rankBadge {
+.rank3 {
   border-color: rgba(135, 82, 47, 0.3);
   background: rgba(250, 239, 230, 0.95);
   color: #7b4928;
+}
+
+.tablePanel {
+  display: grid;
+  gap: 14px;
+}
+
+.tableHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rankTableWrap {
+  overflow-x: auto;
+}
+
+.rankTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rankTable th,
+.rankTable td {
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(71, 84, 145, 0.18);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.rankTable th {
+  color: #4d577a;
+  font-size: 0.86rem;
+  background: rgba(241, 247, 255, 0.88);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .teamInfo {

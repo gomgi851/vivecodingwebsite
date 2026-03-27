@@ -13,7 +13,8 @@
   gap: 8px;
   border: 1px solid var(--ui-info-border);
   border-radius: 10px;
-  background: var(--ui-info-bg);
+  background:
+    linear-gradient(180deg, rgba(247, 250, 255, 0.95), rgba(241, 246, 255, 0.88));
   padding: 9px 10px;
   color: var(--ui-info-text);
   font-size: 0.82rem;

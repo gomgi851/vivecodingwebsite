@@ -1,27 +1,20 @@
 ﻿import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { EmptyState, ErrorState, LoadingState } from '../components/StateBlocks'
+import { MainInsightChips } from '../maincomponent/MainInsightChips'
 import { MainSidebarSection } from '../maincomponent/MainSidebarSection'
+import { MainStatList } from '../maincomponent/MainStatList'
 import { useAppData } from '../store/AppDataContext'
 import type { Hackathon, HackathonDetail, Team } from '../types'
 import styles from './HackathonsPage.module.css'
 
 type QuickViewKey = 'all' | 'ongoing' | 'urgent' | 'new' | 'interest'
 type SortKey = 'end-asc' | 'end-desc' | 'title'
-type ChecklistKey = 'basic' | 'extension' | 'completeness' | 'docs'
-
-interface ChecklistState {
-  basic: boolean
-  extension: boolean
-  completeness: boolean
-  docs: boolean
-}
 
 const MS_DAY = 24 * 60 * 60 * 1000
 const RECENT_VIEW_KEY = 'hackathons_recent_views'
 const INTEREST_TAGS_KEY = 'hackathons_interest_tags'
 const REDUCE_MOTION_KEY = 'hackathons_reduce_motion'
-const CHECKLIST_KEY = 'hackathons_quality_checklist'
 
 const STATUS_LABEL: Record<string, string> = {
   upcoming: '예정',
@@ -57,26 +50,6 @@ function readStoredArray(key: string) {
     return Array.isArray(parsed) ? parsed.filter((item) => typeof item === 'string') : ([] as string[])
   } catch {
     return [] as string[]
-  }
-}
-
-function readStoredChecklist() {
-  const fallback: ChecklistState = {
-    basic: false,
-    extension: false,
-    completeness: false,
-    docs: false,
-  }
-  if (typeof window === 'undefined') return fallback
-  try {
-    const raw = window.localStorage.getItem(CHECKLIST_KEY)
-    if (!raw) return fallback
-    return {
-      ...fallback,
-      ...(JSON.parse(raw) as Partial<ChecklistState>),
-    }
-  } catch {
-    return fallback
   }
 }
 
@@ -181,9 +154,7 @@ export function HackathonsPage() {
 
   const [interestTags, setInterestTags] = useState<string[]>(() => readStoredArray(INTEREST_TAGS_KEY))
   const [recentViewedSlugs, setRecentViewedSlugs] = useState<string[]>(() => readStoredArray(RECENT_VIEW_KEY).slice(0, 3))
-  const [qualityChecklist, setQualityChecklist] = useState<ChecklistState>(() => readStoredChecklist())
   const [selectedSlug, setSelectedSlug] = useState('')
-  const [copiedView, setCopiedView] = useState(false)
   const [reduceMotion, setReduceMotion] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false
     const stored = window.localStorage.getItem(REDUCE_MOTION_KEY)
@@ -195,11 +166,6 @@ export function HackathonsPage() {
     if (typeof window === 'undefined') return
     window.localStorage.setItem(INTEREST_TAGS_KEY, JSON.stringify(interestTags))
   }, [interestTags])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    window.localStorage.setItem(CHECKLIST_KEY, JSON.stringify(qualityChecklist))
-  }, [qualityChecklist])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -406,19 +372,6 @@ export function HackathonsPage() {
     setSearchParams({})
   }
 
-  async function copyCurrentView() {
-    if (typeof window === 'undefined' || typeof navigator === 'undefined' || !navigator.clipboard) return
-    const query = searchParams.toString()
-    const targetUrl = `${window.location.origin}${window.location.pathname}${query ? `?${query}` : ''}`
-    try {
-      await navigator.clipboard.writeText(targetUrl)
-      setCopiedView(true)
-      window.setTimeout(() => setCopiedView(false), 1400)
-    } catch {
-      setCopiedView(false)
-    }
-  }
-
   function selectTagFromCard(nextTag: string, e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation()
     setQueryValue('tag', nextTag)
@@ -451,18 +404,23 @@ export function HackathonsPage() {
     )
   }
 
-  function toggleChecklistItem(key: ChecklistKey) {
-    setQualityChecklist((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }))
-  }
-
   return (
     <section className={`${styles.pageShell} ${reduceMotion ? styles.reduceMotion : ''}`}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarSticky}>
-          <MainSidebarSection title="빠른 보기">
+          <MainSidebarSection title="지금 포커스">
+            <MainStatList
+              items={[
+                { label: '탐색 결과', value: contextResultCount },
+                { label: '진행중', value: quickViewCounts.ongoing },
+                { label: '마감 임박', value: quickViewCounts.urgent },
+                { label: '모집중 팀', value: contextOpenTeamTotal },
+              ]}
+              className={styles.contextGrid}
+            />
+          </MainSidebarSection>
+
+          <MainSidebarSection title="빠른 제어">
             <div className={styles.quickViewGrid}>
               <button
                 type="button"
@@ -509,9 +467,12 @@ export function HackathonsPage() {
                 </button>
               ))}
             </div>
+            <button className="button ghost" type="button" onClick={resetAllFilters}>
+              전체 필터 초기화
+            </button>
           </MainSidebarSection>
 
-          <MainSidebarSection title="저장된 뷰">
+          <MainSidebarSection title="저장된 프리셋">
             <div className={styles.savedViewList}>
               {savedViews.map((view) => (
                 <button key={view.key} type="button" className={styles.savedViewButton} onClick={() => applySavedView(view.query)}>
@@ -522,21 +483,27 @@ export function HackathonsPage() {
             </div>
           </MainSidebarSection>
 
-          <MainSidebarSection title="컨텍스트 인사이트">
+          <MainSidebarSection title="바로가기">
             <div className={styles.contextGrid}>
               <div className={styles.contextItem}>
-                <span>결과 수</span>
-                <strong>{contextResultCount}</strong>
+                <span>선택 해커톤</span>
+                <strong>{selectedHackathon ? selectedHackathon.title : '-'}</strong>
               </div>
               <div className={styles.contextItem}>
                 <span>평균 마감일</span>
                 <strong>{contextAverageDeadline ? formatDateShort(new Date(contextAverageDeadline).toISOString()) : '-'}</strong>
               </div>
-              <div className={styles.contextItem}>
-                <span>모집중 팀</span>
-                <strong>{contextOpenTeamTotal}</strong>
-              </div>
             </div>
+            {selectedHackathon ? (
+              <div className={styles.cardFooter}>
+                <button className="button secondary" type="button" onClick={() => openDetail(selectedHackathon.slug)}>
+                  상세 보기
+                </button>
+                <button className="button ghost" type="button" onClick={(e) => openCamp(selectedHackathon.slug, e)}>
+                  팀 찾기
+                </button>
+              </div>
+            ) : null}
           </MainSidebarSection>
 
           <MainSidebarSection title="최근 본 해커톤">
@@ -559,47 +526,10 @@ export function HackathonsPage() {
             )}
           </MainSidebarSection>
 
-          <MainSidebarSection title="심사 포인트 체크">
-            <div className={styles.checkList}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={qualityChecklist.basic}
-                  onChange={() => toggleChecklistItem('basic')}
-                />
-                기본구현
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={qualityChecklist.extension}
-                  onChange={() => toggleChecklistItem('extension')}
-                />
-                확장
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={qualityChecklist.completeness}
-                  onChange={() => toggleChecklistItem('completeness')}
-                />
-                완성도
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={qualityChecklist.docs}
-                  onChange={() => toggleChecklistItem('docs')}
-                />
-                문서
-              </label>
-            </div>
-          </MainSidebarSection>
-
-          <MainSidebarSection title="접근성">
+          <MainSidebarSection title="화면 설정">
             <label className={styles.reduceMotionToggle}>
               <input type="checkbox" checked={reduceMotion} onChange={() => setReduceMotion((prev) => !prev)} />
-              사이드바 모션 줄이기
+              카드 모션 줄이기
             </label>
           </MainSidebarSection>
 
@@ -609,14 +539,17 @@ export function HackathonsPage() {
       <div className={`stack-lg ${styles.mainColumn}`}>
         <header className={`page-header ${styles.headerBar}`}>
           <p>필터는 메인에서, 결정은 좌측 패널에서 빠르게 진행하세요.</p>
-          <div className={styles.insightChips}>
-            <span className={styles.insightChip}>전체 {hackathons.length}</span>
-            <span className={`${styles.insightChip} ${styles.insightChipOngoing}`}>진행중 {quickViewCounts.ongoing}</span>
-            <span className={`${styles.insightChip} ${styles.insightChipUrgent}`}>마감 임박 {quickViewCounts.urgent}</span>
-            {quickView !== 'all' ? (
-              <span className={styles.insightChip}>빠른 보기 {QUICK_VIEW_LABEL[quickView]}</span>
-            ) : null}
-          </div>
+          <MainInsightChips
+            className={styles.insightChips}
+            items={[
+              { label: `전체 ${hackathons.length}` },
+              { label: `진행중 ${quickViewCounts.ongoing}`, tone: 'success' },
+              { label: `마감 임박 ${quickViewCounts.urgent}`, tone: 'warning' },
+              ...(quickView !== 'all'
+                ? [{ label: `빠른 보기 ${QUICK_VIEW_LABEL[quickView]}`, tone: 'accent' as const }]
+                : []),
+            ]}
+          />
         </header>
 
         <section className={`controls ${styles.filters}`}>
@@ -658,9 +591,6 @@ export function HackathonsPage() {
           </label>
           <button className="button ghost align-end" type="button" onClick={resetAllFilters}>
             필터 초기화
-          </button>
-          <button className="button secondary align-end" type="button" onClick={copyCurrentView}>
-            {copiedView ? '뷰 링크 복사됨' : '현재 뷰 링크 복사'}
           </button>
         </section>
 

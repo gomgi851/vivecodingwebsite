@@ -95,7 +95,6 @@ export function CampPage() {
   const [messageTarget, setMessageTarget] = useState<Team | null>(null)
   const [messageText, setMessageText] = useState('')
   const [messageSnapshot, setMessageSnapshot] = useState<DirectMessage[]>(() => readStoredMessages())
-  const [copiedView, setCopiedView] = useState(false)
 
   useEffect(() => {
     if (!notice) return
@@ -378,27 +377,6 @@ export function CampPage() {
     setMessageText('')
   }
 
-  async function copyCurrentView() {
-    if (typeof window === 'undefined' || typeof navigator === 'undefined' || !navigator.clipboard) return
-    const query = new URLSearchParams()
-    if (effectiveHackathonFilter !== 'all') query.set('hackathon', effectiveHackathonFilter)
-    if (isEditorOpen) query.set('open', 'create')
-    if (keyword.trim()) query.set('q', keyword.trim())
-    if (sortBy !== 'recent') query.set('sort', sortBy)
-    if (onlyMine) query.set('mine', '1')
-    if (onlyOpen) query.set('openOnly', '1')
-    if (onlyMessaged) query.set('messaged', '1')
-    const queryText = query.toString()
-    const targetUrl = `${window.location.origin}${window.location.pathname}${queryText ? `?${queryText}` : ''}`
-    try {
-      await navigator.clipboard.writeText(targetUrl)
-      setCopiedView(true)
-      window.setTimeout(() => setCopiedView(false), 1500)
-    } catch {
-      setCopiedView(false)
-    }
-  }
-
   function submitTeam(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!form.name.trim() || !form.intro.trim() || !form.contactUrl.trim()) {
@@ -483,48 +461,45 @@ export function CampPage() {
     <section className="stack-lg">
       <section className={styles.campLayout}>
         <aside className={styles.sidebar}>
-          <MainSidebarSection title="빠른 액션">
+          <MainSidebarSection title="지금 포커스">
+            <MainStatList
+              items={[
+                { label: '표시 팀', value: visibleTeams.length },
+                { label: '모집중 팀', value: openCount },
+                { label: '내 등록글', value: myTeamsAll.length },
+                { label: '미확인 받은 쪽지', value: unreadInboxCount },
+              ]}
+              className={styles.sidebarStats}
+            />
+          </MainSidebarSection>
+
+          <MainSidebarSection title="빠른 제어">
             <div className={styles.sidebarActions}>
-              <button className="button" type="button" onClick={openCreateEditor}>
-                팀 생성하기
+              <button className="button secondary" type="button" onClick={openCreateEditor}>
+                + 팀 생성
               </button>
               <button
                 className={onlyMine ? 'button secondary' : 'button ghost'}
                 type="button"
                 onClick={() => updateQueryValue('mine', onlyMine ? '0' : '1')}
               >
-                {onlyMine ? '내 등록글 보기 해제' : '내 등록글만 보기'}
+                {onlyMine ? '내 글 필터 해제' : '내 글만 보기'}
               </button>
               <button
                 className={onlyOpen ? 'button secondary' : 'button ghost'}
                 type="button"
                 onClick={() => updateQueryValue('openOnly', onlyOpen ? '0' : '1')}
               >
-                {onlyOpen ? '모집중만 해제' : '모집중만 보기'}
+                {onlyOpen ? '모집중 필터 해제' : '모집중만 보기'}
               </button>
               <button
                 className={onlyMessaged ? 'button secondary' : 'button ghost'}
                 type="button"
                 onClick={() => updateQueryValue('messaged', onlyMessaged ? '0' : '1')}
               >
-                {onlyMessaged ? '쪽지 보낸 팀 해제' : '쪽지 보낸 팀 보기'}
-              </button>
-              <button className="button ghost" type="button" onClick={resetAllFilters}>
-                필터 전체 해제
+                {onlyMessaged ? '쪽지 필터 해제' : '쪽지 보낸 팀'}
               </button>
             </div>
-          </MainSidebarSection>
-
-          <MainSidebarSection title="내 상태">
-            <MainStatList
-              items={[
-                { label: '내 등록글', value: myTeamsAll.length },
-                { label: '내 모집중', value: myOpenTeams.length },
-                { label: '평균 충원율', value: `${avgFillRate}%` },
-                { label: '정원 마감 팀', value: fullTeamCount },
-              ]}
-              className={styles.sidebarStats}
-            />
           </MainSidebarSection>
 
           <MainSidebarSection title="현재 컨텍스트">
@@ -534,35 +509,40 @@ export function CampPage() {
             {isQueryLocked ? <p className={styles.lockBadge}>해커톤 필터 잠금중</p> : null}
           </MainSidebarSection>
 
-          <MainSidebarSection title="요청/알림">
-            <ul className={styles.sidebarAlerts}>
-              <li>미확인 받은 쪽지 {unreadInboxCount}</li>
-              <li>내가 쪽지 보낸 팀 {sentTeamCodes.size}</li>
-              <li>수신대상 미확인 팀 {noOwnerTeamCount}</li>
-            </ul>
+          <MainSidebarSection title="운영 인사이트">
+            <MainStatList
+              items={[
+                { label: '내 모집중', value: myOpenTeams.length },
+                { label: '평균 충원율', value: `${avgFillRate}%` },
+                { label: '보낸 쪽지 팀', value: sentTeamCodes.size },
+                { label: '수신대상 미확인 팀', value: noOwnerTeamCount },
+                { label: '정원 마감 팀', value: fullTeamCount },
+              ]}
+              className={styles.sidebarStats}
+            />
           </MainSidebarSection>
 
-          <MainSidebarSection title="모집글 가이드">
+          <MainSidebarSection title="작성 가이드">
             <ul className={styles.sidebarGuide}>
-              <li>팀 목표를 1~2문장으로 명확하게 쓰기</li>
-              <li>연락 링크와 모집 포지션을 구체적으로 적기</li>
-              <li>총 팀원 수를 현실적으로 잡고 상태 관리하기</li>
+              <li>문제/목표/기간을 첫 문장에 적으면 매칭이 빨라집니다.</li>
+              <li>필요 역할은 2~3개만 우선순위 순으로 작성하세요.</li>
             </ul>
           </MainSidebarSection>
         </aside>
 
         <div className={styles.mainColumn}>
           <div className={styles.headerSection}>
-            <div className={styles.insightChips}>
-              <span className={styles.insightChip}>현재 목록 {visibleTeams.length}</span>
-              <span className={`${styles.insightChip} ${styles.insightChipOpen}`}>모집중 {openCount}</span>
-              <span className={`${styles.insightChip} ${styles.insightChipMine}`}>내 등록글 {myCount}</span>
+            <div className={styles.headerRow}>
+              <div className={styles.insightChips}>
+                <span className={styles.insightChip}>현재 목록 {visibleTeams.length}</span>
+                <span className={`${styles.insightChip} ${styles.insightChipOpen}`}>모집중 {openCount}</span>
+                <span className={`${styles.insightChip} ${styles.insightChipMine}`}>내 등록글 {myCount}</span>
+              </div>
+              <button type="button" className={styles.createTeamBtn} onClick={openCreateEditor}>
+                {isEditorOpen ? '닫기' : '+ 팀 만들기'}
+              </button>
             </div>
           </div>
-
-          <button type="button" className={styles.createTeamBtn} onClick={openCreateEditor}>
-            {isEditorOpen ? '닫기' : '+ 팀 만들기'}
-          </button>
 
           {isEditorOpen ? (
             <div className={styles.formCard}>
@@ -688,9 +668,6 @@ export function CampPage() {
             <button className={styles.toolbarBtn} type="button" onClick={resetAllFilters}>
               필터 초기화
             </button>
-            <button className={styles.toolbarBtn} type="button" onClick={copyCurrentView}>
-              {copiedView ? '뷰 링크 복사됨' : '현재 뷰 링크 복사'}
-            </button>
           </div>
 
           {notice ? <div className={styles.success}>{notice}</div> : null}
@@ -714,22 +691,25 @@ export function CampPage() {
                     <div className={styles.info}>
                       <div className={styles.infoItem}>
                         <span className={styles.label}>해커톤</span>
-                        <span className={styles.value}>{getHackathonLabel(team.hackathonSlug)}</span>
+                        <span className={`${styles.value} ${styles.hackathonValue}`}>{getHackathonLabel(team.hackathonSlug)}</span>
                       </div>
                       <div className={styles.infoItem}>
                         <span className={styles.label}>인원</span>
-                        <span className={styles.value}>{currentMembers}/{totalMembers}명</span>
+                        <span className={`${styles.value} ${styles.memberValue}`}>{currentMembers}/{totalMembers}명</span>
                       </div>
                     </div>
-                    {(team.lookingFor || []).length ? (
-                      <div className={styles.roles}>
-                        {(team.lookingFor || []).map((role) => (
-                          <span key={`${team.teamCode}-${role}`} className={styles.roleTag}>
-                            {role}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
+                    <div className={styles.roles}>
+                      {(team.lookingFor || []).map((role) => (
+                        <span key={`${team.teamCode}-${role}`} className={styles.roleTag}>
+                          {role}
+                        </span>
+                      ))}
+                      {(team.lookingFor || []).length === 0 ? (
+                        <span className={`${styles.roleTag} ${styles.roleTagPlaceholder}`} aria-hidden="true">
+                          placeholder
+                        </span>
+                      ) : null}
+                    </div>
                     <div className={styles.cardFooter}>
                       <a className={styles.actionBtn} href={team.contact?.url} target="_blank" rel="noreferrer">
                         연락하기

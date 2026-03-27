@@ -97,7 +97,7 @@ export function Layout() {
         </div>
       </header>
 
-      <main className={styles.pageMain} id="main-content">
+      <main className={`${styles.pageMain} ${isHome ? styles.pageMainHome : ''}`} id="main-content">
         <Outlet />
       </main>
       <footer className={styles.footer}>
