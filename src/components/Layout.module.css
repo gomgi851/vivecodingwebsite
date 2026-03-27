@@ -1,8 +1,10 @@
 .appShell {
-  --topbar-height: 70px;
-  --page-max-width: 1920px;
+  --topbar-height: 58px;
+  --topbar-content-width: 1600px;
+  --content-top-gap: 24px;
   --page-gutter: 56px;
-  min-width: 1920px;
+  width: 100%;
+  min-width: 0;
   min-height: 100vh;
   display: block;
 }
@@ -33,14 +35,14 @@
   right: 0;
   width: 100%;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: #f4f5f7;
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(71, 84, 145, 0.14);
+  box-shadow: 0 1px 4px rgba(33, 46, 89, 0.06);
 }
 
 .topbarInner {
-  width: var(--page-max-width);
+  width: min(100%, var(--topbar-content-width));
   margin: 0 auto;
   padding: 0 var(--page-gutter);
   min-height: var(--topbar-height);
@@ -133,10 +135,10 @@
 }
 
 .pageMain {
-  width: var(--page-max-width);
+  width: min(100%, var(--topbar-content-width));
   margin: 0 auto;
   min-height: calc(100vh - var(--topbar-height));
-  padding: calc(var(--topbar-height) + 24px) var(--page-gutter) 24px;
+  padding: calc(var(--topbar-height) + var(--content-top-gap)) var(--page-gutter) 24px;
 }
 
 .footer {

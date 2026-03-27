@@ -7,9 +7,11 @@
 
 .sidebar {
   position: sticky;
-  top: var(--split-layout-sidebar-top);
+  top: calc(var(--split-layout-sidebar-top) + 20px);
+}
+
+.sidebarSticky {
   display: grid;
-  align-content: start;
   gap: 12px;
 }
 

@@ -110,74 +110,76 @@ export function RankingsPage() {
   return (
     <section className={styles.rankLayout}>
       <aside className={styles.sidebar}>
-        <MainSidebarSection title="빠른 필터">
-          <div className={styles.sidebarActions}>
-            <button type="button" className="button secondary" onClick={() => updateQuery('period', 'all')}>
-              전체 기간
-            </button>
-            <button type="button" className="button secondary" onClick={() => updateQuery('period', '7d')}>
-              최근 7일
-            </button>
-            <button type="button" className="button secondary" onClick={() => updateQuery('period', '30d')}>
-              최근 30일
-            </button>
-            <button type="button" className="button ghost" onClick={() => updateQuery('sort', 'score')}>
-              점수순 보기
-            </button>
-            <button type="button" className="button ghost" onClick={resetFilters}>
-              필터 전체 해제
-            </button>
-          </div>
-        </MainSidebarSection>
-
-        <MainSidebarSection title="보드 바로가기">
-          <button
-            type="button"
-            className={`${styles.boardButton} ${boardSlug === 'all' ? styles.boardButtonActive : ''}`}
-            onClick={() => updateQuery('board', 'all')}
-          >
-            <strong>최근 업데이트 기준</strong>
-            <span>전체 보드 중 최신 기준</span>
-          </button>
-          <div className={styles.boardList}>
-            {quickBoards.map((board) => (
-              <button
-                key={board.slug}
-                type="button"
-                className={`${styles.boardButton} ${boardSlug === board.slug ? styles.boardButtonActive : ''}`}
-                onClick={() => updateQuery('board', board.slug)}
-              >
-                <strong>{board.label}</strong>
-                <span>엔트리 {board.entryCount}</span>
-              </button>
-            ))}
-          </div>
-        </MainSidebarSection>
-
-        <MainSidebarSection title="현재 컨텍스트">
-          <MainStatList
-            items={[
-              { label: '표시 엔트리', value: entries.length },
-              { label: '최고 점수', value: topScore },
-              { label: '평균 점수', value: avgScore },
-              { label: '업데이트', value: formatDate(selected?.updatedAt) },
-            ]}
-            className={styles.sidebarStats}
-          />
-        </MainSidebarSection>
-
-        {selected?.hackathonSlug ? (
-          <MainSidebarSection title="바로가기">
+        <div className={styles.sidebarSticky}>
+          <MainSidebarSection title="빠른 필터">
             <div className={styles.sidebarActions}>
-              <Link className="button primary" to={`/hackathons/${selected.hackathonSlug}`}>
-                해커톤 상세 보기
-              </Link>
-              <Link className="button secondary" to={`/camp?hackathon=${selected.hackathonSlug}`}>
-                팀 찾기
-              </Link>
+              <button type="button" className="button secondary" onClick={() => updateQuery('period', 'all')}>
+                전체 기간
+              </button>
+              <button type="button" className="button secondary" onClick={() => updateQuery('period', '7d')}>
+                최근 7일
+              </button>
+              <button type="button" className="button secondary" onClick={() => updateQuery('period', '30d')}>
+                최근 30일
+              </button>
+              <button type="button" className="button ghost" onClick={() => updateQuery('sort', 'score')}>
+                점수순 보기
+              </button>
+              <button type="button" className="button ghost" onClick={resetFilters}>
+                필터 전체 해제
+              </button>
             </div>
           </MainSidebarSection>
-        ) : null}
+
+          <MainSidebarSection title="보드 바로가기">
+            <button
+              type="button"
+              className={`${styles.boardButton} ${boardSlug === 'all' ? styles.boardButtonActive : ''}`}
+              onClick={() => updateQuery('board', 'all')}
+            >
+              <strong>최근 업데이트 기준</strong>
+              <span>전체 보드 중 최신 기준</span>
+            </button>
+            <div className={styles.boardList}>
+              {quickBoards.map((board) => (
+                <button
+                  key={board.slug}
+                  type="button"
+                  className={`${styles.boardButton} ${boardSlug === board.slug ? styles.boardButtonActive : ''}`}
+                  onClick={() => updateQuery('board', board.slug)}
+                >
+                  <strong>{board.label}</strong>
+                  <span>엔트리 {board.entryCount}</span>
+                </button>
+              ))}
+            </div>
+          </MainSidebarSection>
+
+          <MainSidebarSection title="현재 컨텍스트">
+            <MainStatList
+              items={[
+                { label: '표시 엔트리', value: entries.length },
+                { label: '최고 점수', value: topScore },
+                { label: '평균 점수', value: avgScore },
+                { label: '업데이트', value: formatDate(selected?.updatedAt) },
+              ]}
+              className={styles.sidebarStats}
+            />
+          </MainSidebarSection>
+
+          {selected?.hackathonSlug ? (
+            <MainSidebarSection title="바로가기">
+              <div className={styles.sidebarActions}>
+                <Link className="button primary" to={`/hackathons/${selected.hackathonSlug}`}>
+                  해커톤 상세 보기
+                </Link>
+                <Link className="button secondary" to={`/camp?hackathon=${selected.hackathonSlug}`}>
+                  팀 찾기
+                </Link>
+              </div>
+            </MainSidebarSection>
+          ) : null}
+        </div>
       </aside>
 
       <div className={`stack-lg ${styles.mainColumn}`}>
