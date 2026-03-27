@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap');
 
 :root {
   --bg-1: #eef3ff;
@@ -25,7 +25,7 @@
     'Apple SD Gothic Neo',
     sans-serif;
   --font-display:
-    'Space Grotesk',
+    'IBM Plex Sans KR',
     'Noto Sans KR',
     'Pretendard',
     sans-serif;
@@ -63,7 +63,7 @@
   --warning: #a45b00;
   --font-body: 'IBM Plex Sans KR', 'Noto Sans KR', sans-serif;
   --font-emphasis: 'IBM Plex Sans KR', 'Noto Sans KR', 'Pretendard', sans-serif;
-  --font-display: 'Black Han Sans', 'IBM Plex Sans KR', sans-serif;
+  --font-display: 'IBM Plex Sans KR', 'Noto Sans KR', 'Pretendard', sans-serif;
   --radius-panel: 20px;
   --ui-card-border: rgba(71, 84, 145, 0.18);
   --ui-card-bg: rgba(255, 255, 255, 0.9);

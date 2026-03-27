@@ -607,7 +607,8 @@ export function HackathonsPage() {
       </aside>
 
       <div className={`stack-lg ${styles.mainColumn}`}>
-        <header className={`page-header ${styles.headerBar}`}>`r`n          <p>필터는 메인에서, 결정은 좌측 패널에서 빠르게 진행하세요.</p>
+        <header className={`page-header ${styles.headerBar}`}>
+          <p>필터는 메인에서, 결정은 좌측 패널에서 빠르게 진행하세요.</p>
           <div className={styles.insightChips}>
             <span className={styles.insightChip}>전체 {hackathons.length}</span>
             <span className={`${styles.insightChip} ${styles.insightChipOngoing}`}>진행중 {quickViewCounts.ongoing}</span>
