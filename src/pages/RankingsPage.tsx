@@ -1,6 +1,8 @@
-import { Link, useSearchParams } from 'react-router-dom'
+﻿import { Link, useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 import { EmptyState, ErrorState, LoadingState } from '../components/StateBlocks'
+import { MainSidebarSection } from '../maincomponent/MainSidebarSection'
+import { MainStatList } from '../maincomponent/MainStatList'
 import { useAppData } from '../store/AppDataContext'
 import styles from './RankingsPage.module.css'
 
@@ -108,8 +110,7 @@ export function RankingsPage() {
   return (
     <section className={styles.rankLayout}>
       <aside className={styles.sidebar}>
-        <article className={styles.sidebarCard}>
-          <h2 className={styles.sidebarTitle}>빠른 필터</h2>
+        <MainSidebarSection title="빠른 필터">
           <div className={styles.sidebarActions}>
             <button type="button" className="button secondary" onClick={() => updateQuery('period', 'all')}>
               전체 기간
@@ -127,10 +128,9 @@ export function RankingsPage() {
               필터 전체 해제
             </button>
           </div>
-        </article>
+        </MainSidebarSection>
 
-        <article className={styles.sidebarCard}>
-          <h2 className={styles.sidebarTitle}>보드 바로가기</h2>
+        <MainSidebarSection title="보드 바로가기">
           <button
             type="button"
             className={`${styles.boardButton} ${boardSlug === 'all' ? styles.boardButtonActive : ''}`}
@@ -152,33 +152,22 @@ export function RankingsPage() {
               </button>
             ))}
           </div>
-        </article>
+        </MainSidebarSection>
 
-        <article className={styles.sidebarCard}>
-          <h2 className={styles.sidebarTitle}>현재 컨텍스트</h2>
-          <ul className={styles.sidebarStats}>
-            <li>
-              <span>표시 엔트리</span>
-              <strong>{entries.length}</strong>
-            </li>
-            <li>
-              <span>최고 점수</span>
-              <strong>{topScore}</strong>
-            </li>
-            <li>
-              <span>평균 점수</span>
-              <strong>{avgScore}</strong>
-            </li>
-            <li>
-              <span>업데이트</span>
-              <strong>{formatDate(selected?.updatedAt)}</strong>
-            </li>
-          </ul>
-        </article>
+        <MainSidebarSection title="현재 컨텍스트">
+          <MainStatList
+            items={[
+              { label: '표시 엔트리', value: entries.length },
+              { label: '최고 점수', value: topScore },
+              { label: '평균 점수', value: avgScore },
+              { label: '업데이트', value: formatDate(selected?.updatedAt) },
+            ]}
+            className={styles.sidebarStats}
+          />
+        </MainSidebarSection>
 
         {selected?.hackathonSlug ? (
-          <article className={styles.sidebarCard}>
-            <h2 className={styles.sidebarTitle}>바로가기</h2>
+          <MainSidebarSection title="바로가기">
             <div className={styles.sidebarActions}>
               <Link className="button primary" to={`/hackathons/${selected.hackathonSlug}`}>
                 해커톤 상세 보기
@@ -187,7 +176,7 @@ export function RankingsPage() {
                 팀 찾기
               </Link>
             </div>
-          </article>
+          </MainSidebarSection>
         ) : null}
       </aside>
 
@@ -349,3 +338,5 @@ export function RankingsPage() {
     </section>
   )
 }
+
+

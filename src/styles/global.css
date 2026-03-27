@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap');
+
 :root {
   --bg-1: #eef3ff;
   --bg-2: #fff8ed;
@@ -27,17 +29,249 @@
     'Noto Sans KR',
     'Pretendard',
     sans-serif;
-  --space-page-gutter: clamp(18px, 3vw, 44px);
-  --space-block: clamp(14px, 2vw, 24px);
-  --space-panel: clamp(16px, 1.8vw, 24px);
+  --space-page-gutter: 44px;
+  --space-block: 24px;
+  --space-panel: 24px;
   --radius-panel: 18px;
   --split-layout-sidebar-width: 220px;
   --split-layout-sidebar-width-narrow: 208px;
+  --split-layout-sidebar-top: 132px;
   --split-layout-gap: 28px;
   --split-layout-gap-narrow: 22px;
-  --split-layout-height: clamp(620px, calc(100dvh - 210px), 980px);
+  --split-layout-height: 980px;
   --split-layout-min-height: 620px;
   --split-layout-collapse-breakpoint: 980px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Design Revamp: Neo Editorial Control Room                                   */
+/* -------------------------------------------------------------------------- */
+
+:root {
+  --bg-1: #f7f0e2;
+  --bg-2: #fefcf8;
+  --bg-3: #f0f8f4;
+  --surface: rgba(255, 252, 247, 0.78);
+  --surface-strong: #fffaf2;
+  --line: rgba(45, 55, 68, 0.18);
+  --ink: #19212f;
+  --muted: #596273;
+  --brand: #0f6b62;
+  --brand-soft: #d8efe9;
+  --success: #126743;
+  --danger: #9c2234;
+  --warning: #a45b00;
+  --font-body: 'IBM Plex Sans KR', 'Noto Sans KR', sans-serif;
+  --font-emphasis: 'IBM Plex Sans KR', 'Noto Sans KR', 'Pretendard', sans-serif;
+  --font-display: 'Black Han Sans', 'IBM Plex Sans KR', sans-serif;
+  --radius-panel: 20px;
+  --ui-card-border: rgba(71, 84, 145, 0.18);
+  --ui-card-bg: rgba(255, 255, 255, 0.9);
+  --ui-card-shadow: 0 10px 22px rgba(33, 46, 89, 0.08);
+  --ui-card-title: #2e406f;
+  --ui-info-border: rgba(73, 95, 158, 0.16);
+  --ui-info-bg: rgba(246, 250, 255, 0.85);
+  --ui-info-text: #445071;
+  --ui-info-strong: #27498f;
+  --ui-chip-border: rgba(79, 94, 165, 0.24);
+  --ui-chip-bg: rgba(243, 248, 255, 0.88);
+  --ui-chip-text: #344269;
+  --ui-chip-active-border: rgba(56, 89, 170, 0.4);
+  --ui-chip-active-bg: rgba(234, 242, 255, 0.96);
+  --ui-chip-active-text: #254b94;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  color: var(--ink);
+  background: #f4f5f7;
+  background-attachment: fixed;
+  font-family: var(--font-body);
+  line-height: 1.58;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(15, 107, 98, 0.58);
+  outline-offset: 2px;
+}
+
+.hero-card {
+  border-radius: 24px;
+  border: 1px solid rgba(49, 58, 72, 0.22);
+  background: rgba(255, 252, 247, 0.9);
+  box-shadow:
+    0 22px 40px rgba(44, 50, 64, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.focus-panel,
+.action-card,
+.metric-card,
+.panel,
+.team-card,
+.table-wrap,
+.submit-readiness {
+  border: 1px solid rgba(50, 60, 76, 0.18);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  backdrop-filter: blur(4px);
+}
+
+.panel {
+  box-shadow:
+    0 12px 28px rgba(43, 50, 65, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.58);
+}
+
+.panel-elevated {
+  box-shadow:
+    0 20px 32px rgba(30, 39, 54, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.64);
+}
+
+.eyebrow {
+  color: #8d4b14;
+  font-family: var(--font-emphasis);
+  letter-spacing: 0.06em;
+}
+
+.hero-copy,
+.panel p,
+.action-card p,
+.muted,
+.metric-label,
+.page-header p,
+.detail-header p {
+  color: #5a6476 !important;
+}
+
+select,
+input,
+textarea {
+  border: 1px solid rgba(45, 55, 68, 0.26);
+  border-radius: 12px;
+  background: rgba(255, 252, 248, 0.92);
+  color: var(--ink);
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(15, 107, 98, 0.55);
+  box-shadow: 0 0 0 3px rgba(15, 107, 98, 0.14);
+}
+
+.button {
+  border-radius: 12px;
+  border: 1px solid #0d5e56;
+  background: #0f6b62;
+  color: #f6fff9;
+  font-family: var(--font-emphasis);
+  font-size: 0.84rem;
+  letter-spacing: 0.02em;
+  box-shadow: 0 9px 16px rgba(14, 91, 81, 0.24);
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.button.secondary {
+  border-color: rgba(141, 75, 20, 0.42);
+  background: #f7dfc0;
+  color: #7e4610;
+  box-shadow: 0 8px 14px rgba(134, 84, 35, 0.18);
+}
+
+.button.ghost {
+  border-color: rgba(45, 55, 68, 0.24);
+  background: rgba(255, 253, 249, 0.84);
+  color: #243244;
+  box-shadow: none;
+}
+
+.status-upcoming {
+  background: #fdf2df;
+  color: #91520f;
+}
+
+.status-ongoing {
+  background: #def4ea;
+  color: #126743;
+}
+
+.status-ended {
+  background: #eceff3;
+  color: #5b6679;
+}
+
+.mini-chip,
+.tag,
+.jump-link,
+.open-pill,
+.closed-pill {
+  border-color: rgba(45, 55, 68, 0.22);
+  background: rgba(255, 251, 243, 0.92);
+  color: #2e3d52;
+}
+
+.open-pill {
+  background: #def4ea;
+  color: #126743;
+}
+
+.closed-pill {
+  background: #faead9;
+  color: #8b4e12;
+}
+
+th {
+  color: #415065;
+  background: rgba(239, 243, 236, 0.92);
+}
+
+tbody tr:nth-child(2n) {
+  background: rgba(252, 250, 245, 0.75);
+}
+
+tbody tr:hover {
+  background: rgba(228, 244, 235, 0.78);
+}
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panel,
+.hero-card,
+.action-card,
+.team-card,
+.table-wrap,
+.state-block,
+.top-row {
+  animation: revealUp 420ms ease both;
 }
 
 * {
@@ -49,6 +283,13 @@ body,
 #root {
   margin: 0;
   min-height: 100%;
+}
+
+#root {
+  width: 100%;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 html {
@@ -106,9 +347,9 @@ h3 {
 .hero-card {
   border-radius: 24px;
   border: 1px solid var(--line);
-  background: linear-gradient(130deg, rgba(255, 255, 255, 0.94), rgba(230, 242, 255, 0.78));
+  background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 22px 40px rgba(50, 70, 140, 0.14);
-  padding: clamp(20px, 2.4vw, 30px);
+  padding: 30px;
 }
 
 .hero-grid {
@@ -128,7 +369,7 @@ h3 {
 
 .hero-card h1 {
   margin: 0 0 10px;
-  font-size: clamp(1.45rem, 2vw, 2.2rem);
+  font-size: 2.2rem;
 }
 
 .hero-copy {
@@ -302,14 +543,7 @@ textarea {
 }
 
 select {
-  background-image:
-    linear-gradient(45deg, transparent 50%, #3b4a79 50%),
-    linear-gradient(135deg, #3b4a79 50%, transparent 50%);
-  background-position:
-    calc(100% - 18px) calc(50% - 2px),
-    calc(100% - 12px) calc(50% - 2px);
-  background-size: 6px 6px, 6px 6px;
-  background-repeat: no-repeat;
+  background-image: none;
   padding-right: 34px;
 }
 
@@ -331,7 +565,7 @@ input[type='checkbox']::before {
   border-radius: 2px;
   transform: scale(0);
   transition: transform 0.15s ease;
-  background: linear-gradient(130deg, #2b61df, #1d45a7);
+  background: #2b61df;
 }
 
 input[type='checkbox']:checked::before {
@@ -353,7 +587,7 @@ textarea {
   justify-content: center;
   border-radius: 11px;
   border: 1px solid #1c47b3;
-  background: linear-gradient(130deg, #2b61df, #1d45a7);
+  background: #2b61df;
   color: #fff;
   text-decoration: none;
   padding: 11px 15px;
@@ -372,7 +606,7 @@ textarea {
 
 .button.secondary {
   border-color: #3f7cb8;
-  background: linear-gradient(130deg, #eef6ff, #dbedff);
+  background: #e3f0ff;
   color: #1d4f8d;
 }
 
@@ -537,12 +771,12 @@ tbody tr:hover {
 }
 
 .podium {
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.95), rgba(238, 245, 255, 0.85));
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .podium-1 {
   border-color: rgba(195, 135, 14, 0.38);
-  background: linear-gradient(140deg, rgba(255, 248, 229, 0.94), rgba(255, 255, 255, 0.9));
+  background: rgba(255, 248, 229, 0.94);
 }
 
 .podium-2 {
@@ -574,29 +808,6 @@ tbody tr:hover {
   }
 }
 
-@media (max-width: 1100px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .detail-meta-grid,
-  .controls,
-  .controls-4 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 760px) {
-  .grid-2,
-  .grid-3,
-  .detail-meta-grid,
-  .controls,
-  .controls-4,
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .open-pill,
 .closed-pill {
   border-radius: 999px;
@@ -614,3 +825,5 @@ tbody tr:hover {
   background: #fff1e2;
   color: #9d4f09;
 }
+
+

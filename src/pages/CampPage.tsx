@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+﻿import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { EmptyState, ErrorState, LoadingState } from '../components/StateBlocks'
+import { MainSidebarSection } from '../maincomponent/MainSidebarSection'
+import { MainStatList } from '../maincomponent/MainStatList'
 import { useAppData } from '../store/AppDataContext'
 import styles from './CampPage.module.css'
 import type { DirectMessage, Team } from '../types'
@@ -481,8 +483,7 @@ export function CampPage() {
     <section className="stack-lg">
       <section className={styles.campLayout}>
         <aside className={styles.sidebar}>
-          <article className={styles.sidebarCard}>
-            <p className={styles.sidebarTitle}>빠른 액션</p>
+          <MainSidebarSection title="빠른 액션">
             <div className={styles.sidebarActions}>
               <button className="button" type="button" onClick={openCreateEditor}>
                 팀 생성하기
@@ -512,329 +513,256 @@ export function CampPage() {
                 필터 전체 해제
               </button>
             </div>
-          </article>
+          </MainSidebarSection>
 
-          <article className={styles.sidebarCard}>
-            <p className={styles.sidebarTitle}>내 상태</p>
-            <ul className={styles.sidebarStats}>
-              <li>
-                <span>내 등록글</span>
-                <strong>{myTeamsAll.length}</strong>
-              </li>
-              <li>
-                <span>내 모집중</span>
-                <strong>{myOpenTeams.length}</strong>
-              </li>
-              <li>
-                <span>평균 충원율</span>
-                <strong>{avgFillRate}%</strong>
-              </li>
-              <li>
-                <span>정원 마감 팀</span>
-                <strong>{fullTeamCount}</strong>
-              </li>
-            </ul>
-          </article>
+          <MainSidebarSection title="내 상태">
+            <MainStatList
+              items={[
+                { label: '내 등록글', value: myTeamsAll.length },
+                { label: '내 모집중', value: myOpenTeams.length },
+                { label: '평균 충원율', value: `${avgFillRate}%` },
+                { label: '정원 마감 팀', value: fullTeamCount },
+              ]}
+              className={styles.sidebarStats}
+            />
+          </MainSidebarSection>
 
-          <article className={styles.sidebarCard}>
-            <p className={styles.sidebarTitle}>현재 컨텍스트</p>
+          <MainSidebarSection title="현재 컨텍스트">
             <p className={styles.contextStrong}>{contextLabel}</p>
             <p className="muted">필터 결과 {visibleTeams.length}팀</p>
             <p className="muted">모집중 팀 {contextRecruitingCount}팀</p>
             {isQueryLocked ? <p className={styles.lockBadge}>해커톤 필터 잠금중</p> : null}
-          </article>
+          </MainSidebarSection>
 
-          <article className={styles.sidebarCard}>
-            <p className={styles.sidebarTitle}>요청/알림</p>
+          <MainSidebarSection title="요청/알림">
             <ul className={styles.sidebarAlerts}>
               <li>미확인 받은 쪽지 {unreadInboxCount}</li>
               <li>내가 쪽지 보낸 팀 {sentTeamCodes.size}</li>
               <li>수신대상 미확인 팀 {noOwnerTeamCount}</li>
             </ul>
-          </article>
+          </MainSidebarSection>
 
-          <article className={styles.sidebarCard}>
-            <p className={styles.sidebarTitle}>모집글 가이드</p>
+          <MainSidebarSection title="모집글 가이드">
             <ul className={styles.sidebarGuide}>
               <li>팀 목표를 1~2문장으로 명확하게 쓰기</li>
               <li>연락 링크와 모집 포지션을 구체적으로 적기</li>
               <li>총 팀원 수를 현실적으로 잡고 상태 관리하기</li>
             </ul>
-          </article>
+          </MainSidebarSection>
         </aside>
 
         <div className={styles.mainColumn}>
-          <header className={`page-header ${styles.headerBar}`}>
+          <div className={styles.headerSection}>
             <div className={styles.insightChips}>
               <span className={styles.insightChip}>현재 목록 {visibleTeams.length}</span>
               <span className={`${styles.insightChip} ${styles.insightChipOpen}`}>모집중 {openCount}</span>
               <span className={`${styles.insightChip} ${styles.insightChipMine}`}>내 등록글 {myCount}</span>
             </div>
-          </header>
+          </div>
 
-          <section className={`controls controls-4 ${styles.filterWrap}`}>
-            <label>
-              검색
-              <input
-                value={keyword}
-                onChange={(e) => updateQueryValue('q', e.target.value)}
-                placeholder="팀명, 소개, 모집 포지션"
-              />
-            </label>
-            <label>
-              해커톤 필터
-              <select
-                value={effectiveHackathonFilter}
-                onChange={(e) => changeFilter(e.target.value)}
-                disabled={isQueryLocked}
-              >
-                <option value="all">전체</option>
-                {hackathons.map((hackathon) => (
-                  <option key={hackathon.slug} value={hackathon.slug}>
-                    {hackathon.title}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              정렬
-              <select value={sortBy} onChange={(e) => updateQueryValue('sort', e.target.value)}>
-                <option value="recent">최신 생성순</option>
-                <option value="open">모집중 우선</option>
-                <option value="members">인원 많은순</option>
-              </select>
-            </label>
-            <button className="button ghost align-end" type="button" onClick={resetAllFilters}>
+          <button type="button" className={styles.createTeamBtn} onClick={openCreateEditor}>
+            {isEditorOpen ? '닫기' : '+ 팀 만들기'}
+          </button>
+
+          {isEditorOpen ? (
+            <div className={styles.formCard}>
+              <h2 className={styles.formTitle}>{editingTeamCode ? '팀 수정' : '새 팀 생성'}</h2>
+              <form onSubmit={submitTeam} className={styles.form}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>연결 해커톤</label>
+                  <select
+                    className={styles.input}
+                    value={form.hackathonSlug}
+                    onChange={(e) => updateForm('hackathonSlug', e.target.value)}
+                  >
+                    <option value="">미연결 (공통 팀)</option>
+                    {hackathons.map((hackathon) => (
+                      <option key={hackathon.slug} value={hackathon.slug}>
+                        {hackathon.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>팀 이름 *</label>
+                  <input className={styles.input} value={form.name} onChange={(e) => updateForm('name', e.target.value)} />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>소개 *</label>
+                  <textarea className={styles.textarea} rows={4} value={form.intro} onChange={(e) => updateForm('intro', e.target.value)} />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>모집 역할 (쉼표 구분)</label>
+                  <input
+                    className={styles.input}
+                    value={form.lookingFor}
+                    onChange={(e) => updateForm('lookingFor', e.target.value)}
+                    placeholder="Frontend, Designer"
+                  />
+                </div>
+                <div className={styles.ownerRow}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>총 팀원 수</label>
+                    <input
+                      className={styles.input}
+                      type="number"
+                      min="1"
+                      value={form.totalMemberCount}
+                      onChange={(e) => updateForm('totalMemberCount', e.target.value)}
+                    />
+                  </div>
+                  <label className={styles.label}>
+                    <input
+                      type="checkbox"
+                      checked={form.isOpen}
+                      onChange={(e) => updateForm('isOpen', e.target.checked)}
+                      className={styles.checkbox}
+                    />
+                    현재 모집 중
+                  </label>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>연락 URL *</label>
+                  <input
+                    className={styles.input}
+                    value={form.contactUrl}
+                    onChange={(e) => updateForm('contactUrl', e.target.value)}
+                    placeholder="https://open.kakao.com/..."
+                  />
+                </div>
+
+                <button type="submit" className={styles.submitBtn}>
+                  {editingTeamCode ? '팀 수정 완료' : '팀 생성하기'}
+                </button>
+              </form>
+            </div>
+          ) : null}
+
+          <div className={styles.toolbar}>
+            <input
+              type="search"
+              className={styles.searchInput}
+              placeholder="팀명, 소개, 역할로 검색"
+              value={keyword}
+              onChange={(e) => updateQueryValue('q', e.target.value)}
+              aria-label="팀 검색"
+            />
+            <select
+              className={styles.toolbarBtn}
+              value={effectiveHackathonFilter}
+              onChange={(e) => changeFilter(e.target.value)}
+              disabled={isQueryLocked}
+            >
+              <option value="all">전체 해커톤</option>
+              {hackathons.map((hackathon) => (
+                <option key={hackathon.slug} value={hackathon.slug}>
+                  {hackathon.title}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              className={`${styles.toolbarBtn} ${sortBy === 'recent' ? styles.toolbarBtnActive : ''}`}
+              onClick={() => updateQueryValue('sort', 'recent')}
+            >
+              최신순
+            </button>
+            <button
+              type="button"
+              className={`${styles.toolbarBtn} ${sortBy === 'open' ? styles.toolbarBtnActive : ''}`}
+              onClick={() => updateQueryValue('sort', 'open')}
+            >
+              모집우선
+            </button>
+            <button
+              type="button"
+              className={`${styles.toolbarBtn} ${sortBy === 'members' ? styles.toolbarBtnActive : ''}`}
+              onClick={() => updateQueryValue('sort', 'members')}
+            >
+              인원순
+            </button>
+            <button className={styles.toolbarBtn} type="button" onClick={resetAllFilters}>
               필터 초기화
             </button>
-            <button className="button secondary align-end" type="button" onClick={copyCurrentView}>
+            <button className={styles.toolbarBtn} type="button" onClick={copyCurrentView}>
               {copiedView ? '뷰 링크 복사됨' : '현재 뷰 링크 복사'}
             </button>
-          </section>
-          <section className={styles.resultMeta} aria-live="polite">
-            <p>
-              현재 결과 <strong>{visibleTeams.length}</strong>팀 · 활성 필터 <strong>{activeFilterCount}</strong>개
-            </p>
-            <p className="muted">탐색 중인 팀 목록 상태를 그대로 공유할 수 있습니다.</p>
-          </section>
-          {isQueryLocked ? (
-            <p className={`muted ${styles.queryNotice}`}>
-              쿼리 필터 적용 중: <strong>{queryHackathon}</strong> (해당 해커톤 팀만 표시)
-            </p>
-          ) : null}
-          {hasActiveFilter ? (
-            <section className={styles.activeFilters} aria-label="현재 적용 필터">
-              {keyword.trim() ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('q', '')}>
-                  검색: {keyword} ×
-                </button>
-              ) : null}
-              {effectiveHackathonFilter !== 'all' && !isQueryLocked ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => changeFilter('all')}>
-                  해커톤: {effectiveHackathonFilter} ×
-                </button>
-              ) : null}
-              {sortBy !== 'recent' ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('sort', 'recent')}>
-                  정렬: {sortBy === 'open' ? '모집중 우선' : '인원 많은순'} ×
-                </button>
-              ) : null}
-              {onlyMine ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('mine', '0')}>
-                  내 등록글만 ×
-                </button>
-              ) : null}
-              {onlyOpen ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('openOnly', '0')}>
-                  모집중만 ×
-                </button>
-              ) : null}
-              {onlyMessaged ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('messaged', '0')}>
-                  쪽지 보낸 팀 ×
-                </button>
-              ) : null}
-            </section>
-          ) : null}
+          </div>
 
-          <section>
-            <article className="panel">
-              <div className={styles.listHeader}>
-                <h2>팀 리스트</h2>
-                <button className="button" type="button" onClick={openCreateEditor}>
-                  팀 생성하기
-                </button>
-              </div>
-              {visibleTeams.length ? (
-                <div className={styles.teamGrid}>
-                  {visibleTeams.map((team) => {
-                    const currentMembers = getCurrentMembers(team)
-                    const totalMembers = getTotalMembers(team)
-                    const isRecruiting = team.isOpen && currentMembers < totalMembers
-                    return (
-                      <div key={team.teamCode} className={`team-card cv-auto ${styles.teamCard}`}>
-                        {team.ownerId === viewerId ? <span className={styles.ownerTag}>내 등록글</span> : null}
-                        <div className={styles.cardMedia} aria-hidden="true">
-                          <span className={styles.mediaFallback}>
-                            {team.hackathonSlug ? getHackathonLabel(team.hackathonSlug) : '공통 팀 모집'}
-                          </span>
-                        </div>
-                        <div className="between">
-                          <div className={styles.teamNameWrap}>
-                            <strong>{team.name}</strong>
-                            {editingTeamCode === team.teamCode ? <span className={styles.editingTag}>수정 중</span> : null}
-                          </div>
-                          <span className={isRecruiting ? 'open-pill' : 'closed-pill'}>
-                            {isRecruiting ? '모집 중' : '마감'}
-                          </span>
-                        </div>
-                        <p className="muted">해커톤: {getHackathonLabel(team.hackathonSlug)}</p>
-                        <p className={styles.teamIntro}>{team.intro}</p>
-                        <div className={styles.metaChips}>
-                          <span className={styles.metaChip}>
-                            현재 {currentMembers} / 총 {totalMembers}
-                          </span>
-                          <span className={styles.metaChip}>포지션 {(team.lookingFor || []).length || 0}</span>
-                        </div>
-                        <div className={styles.positionTags}>
-                          {(team.lookingFor || []).length ? (
-                            (team.lookingFor || []).map((position) => (
-                              <span key={`${team.teamCode}-${position}`} className="tag">
-                                {position}
-                              </span>
-                            ))
-                          ) : (
-                            <span className="tag">포지션 미기재</span>
-                          )}
-                        </div>
-                        <div className={styles.cardFooter}>
-                          <a className="button ghost" href={team.contact?.url} target="_blank" rel="noreferrer">
-                            연락 링크
-                          </a>
-                          {team.hackathonSlug ? (
-                            <Link className="button secondary" to={`/hackathons/${team.hackathonSlug}`}>
-                              연결 해커톤 보기
-                            </Link>
-                          ) : null}
-                          {team.ownerId === viewerId ? (
-                            <>
-                              <button className="button secondary" type="button" onClick={() => startEdit(team)}>
-                                이 팀 수정
-                              </button>
-                              <button
-                                className={`button ghost ${styles.deleteButton}`}
-                                type="button"
-                                onClick={() => requestDelete(team)}
-                              >
-                                이 팀 삭제
-                              </button>
-                            </>
-                          ) : (
-                            <button className="button secondary" type="button" onClick={() => openMessageModal(team)}>
-                              쪽지 보내기
-                            </button>
-                          )}
-                        </div>
+          {notice ? <div className={styles.success}>{notice}</div> : null}
+          {visibleTeams.length ? (
+            <div className={styles.grid}>
+              {visibleTeams.map((team) => {
+                const currentMembers = getCurrentMembers(team)
+                const totalMembers = getTotalMembers(team)
+                const isRecruiting = team.isOpen && currentMembers < totalMembers
+                return (
+                  <div key={team.teamCode} id={`team-card-${team.teamCode}`} className={styles.teamCard}>
+                    <div className={styles.cardHeader}>
+                      <h3 className={styles.teamName}>{team.name}</h3>
+                      <div className={styles.headerActions}>
+                        <span className={`${styles.status} ${isRecruiting ? styles.open : styles.closed}`}>
+                          {isRecruiting ? '모집중' : '모집완료'}
+                        </span>
                       </div>
-                    )
-                  })}
-                </div>
-              ) : (
-                <EmptyState title="팀이 없습니다." message="새 팀을 생성해보세요." />
-              )}
-            </article>
-          </section>
+                    </div>
+                    <p className={styles.intro}>{team.intro}</p>
+                    <div className={styles.info}>
+                      <div className={styles.infoItem}>
+                        <span className={styles.label}>해커톤</span>
+                        <span className={styles.value}>{getHackathonLabel(team.hackathonSlug)}</span>
+                      </div>
+                      <div className={styles.infoItem}>
+                        <span className={styles.label}>인원</span>
+                        <span className={styles.value}>{currentMembers}/{totalMembers}명</span>
+                      </div>
+                    </div>
+                    {(team.lookingFor || []).length ? (
+                      <div className={styles.roles}>
+                        {(team.lookingFor || []).map((role) => (
+                          <span key={`${team.teamCode}-${role}`} className={styles.roleTag}>
+                            {role}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                    <div className={styles.cardFooter}>
+                      <a className={styles.actionBtn} href={team.contact?.url} target="_blank" rel="noreferrer">
+                        연락하기
+                      </a>
+                      {team.hackathonSlug ? (
+                        <Link className={styles.actionBtn} to={`/hackathons/${team.hackathonSlug}`}>
+                          연결 해커톤
+                        </Link>
+                      ) : null}
+                      {team.ownerId === viewerId ? (
+                        <>
+                          <button className={styles.actionBtn} type="button" onClick={() => startEdit(team)}>
+                            팀 수정
+                          </button>
+                          <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} type="button" onClick={() => requestDelete(team)}>
+                            팀 삭제
+                          </button>
+                        </>
+                      ) : (
+                        <button className={styles.actionBtn} type="button" onClick={() => openMessageModal(team)}>
+                          쪽지 보내기
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          ) : (
+            <EmptyState title="팀이 없습니다" message="조건에 맞는 팀이 없어요. 새 팀을 만들어 시작해보세요." />
+          )}
         </div>
       </section>
-
-      {isEditorOpen ? (
-        <div className={styles.modalBackdrop} role="presentation">
-          <section
-            id="team-editor"
-            className={`${styles.modalCard} ${styles.editorModalCard}`}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="editor-title"
-          >
-            <h3 id="editor-title">{editingTeamCode ? '팀 수정' : '팀 생성'}</h3>
-            <form className="form-grid" onSubmit={submitTeam}>
-              <label>
-                연결 해커톤
-                <select
-                  value={form.hackathonSlug}
-                  onChange={(e) => updateForm('hackathonSlug', e.target.value)}
-                >
-                  <option value="">미연결(공통 팀)</option>
-                  {hackathons.map((hackathon) => (
-                    <option key={hackathon.slug} value={hackathon.slug}>
-                      {hackathon.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                팀명*
-                <input value={form.name} onChange={(e) => updateForm('name', e.target.value)} />
-              </label>
-              <label>
-                총 팀원 수
-                <input
-                  type="number"
-                  min="1"
-                  value={form.totalMemberCount}
-                  onChange={(e) => updateForm('totalMemberCount', e.target.value)}
-                />
-              </label>
-              <p className="muted span-2">현재 팀원 수는 합류 승인에 따라 자동으로 반영됩니다.</p>
-              <label>
-                모집 포지션 (쉼표 구분)
-                <input
-                  value={form.lookingFor}
-                  onChange={(e) => updateForm('lookingFor', e.target.value)}
-                  placeholder="Frontend, Designer"
-                />
-              </label>
-              <label className="span-2">
-                소개*
-                <textarea value={form.intro} rows={3} onChange={(e) => updateForm('intro', e.target.value)} />
-              </label>
-              <label className="span-2">
-                연락 링크*
-                <input
-                  value={form.contactUrl}
-                  onChange={(e) => updateForm('contactUrl', e.target.value)}
-                  placeholder="https://open.kakao.com/..."
-                />
-              </label>
-              <label className="checkbox span-2">
-                <input
-                  type="checkbox"
-                  checked={form.isOpen}
-                  onChange={(e) => updateForm('isOpen', e.target.checked)}
-                />
-                모집 중 여부(isOpen)
-              </label>
-              <div className="inline-actions span-2">
-                <button className="button" type="submit">
-                  {editingTeamCode ? '수정 저장' : '팀 등록'}
-                </button>
-                <button className="button ghost" type="button" onClick={cancelEdit}>
-                  취소
-                </button>
-              </div>
-            </form>
-            <p className="muted">이 브라우저에서 등록한 팀 글만 수정/삭제할 수 있습니다.</p>
-            <p className="muted">
-              상세 페이지로 돌아가려면{' '}
-              <Link to={form.hackathonSlug ? `/hackathons/${form.hackathonSlug}` : '/hackathons'}>
-                해커톤 상세/목록
-              </Link>{' '}
-              으로 이동하세요.
-            </p>
-          </section>
-        </div>
-      ) : null}
-
       {deleteTarget ? (
         <div className={styles.modalBackdrop} role="presentation">
           <section className={styles.modalCard} role="dialog" aria-modal="true" aria-labelledby="delete-title">
@@ -886,3 +814,5 @@ export function CampPage() {
     </section>
   )
 }
+
+

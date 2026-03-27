@@ -2,7 +2,7 @@
   padding: 22px;
   border: 1px solid rgba(57, 86, 168, 0.22);
   border-radius: 18px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(236, 245, 255, 0.86));
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .funnelBar {
@@ -57,8 +57,8 @@
 }
 
 .funnelStepDone {
-  border-color: rgba(31, 138, 84, 0.34);
-  background: rgba(232, 252, 242, 0.92);
+  border-color: rgba(56, 89, 170, 0.34);
+  background: rgba(234, 242, 255, 0.95);
 }
 
 .submitLead {
@@ -69,18 +69,18 @@
 
 .detailLayout {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: 20px;
+  grid-template-columns: var(--split-layout-sidebar-width) minmax(0, 1fr);
+  gap: var(--split-layout-gap);
   align-items: start;
 }
 
 .sectionSidebar {
   position: sticky;
-  top: 126px;
-  border: 1px solid rgba(60, 85, 152, 0.18);
+  top: var(--split-layout-sidebar-top);
+  border: 1px solid var(--ui-card-border);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 10px 24px rgba(36, 58, 112, 0.08);
+  background: var(--ui-card-bg);
+  box-shadow: var(--ui-card-shadow);
   padding: 14px;
 }
 
@@ -96,16 +96,16 @@
   margin: 0;
   font-size: 0.83rem;
   font-weight: 700;
-  color: #55618a;
+  color: var(--ui-card-title);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .sidebarCount {
-  border: 1px solid rgba(68, 98, 172, 0.24);
+  border: 1px solid var(--ui-chip-border);
   border-radius: 999px;
-  background: rgba(241, 247, 255, 0.9);
-  color: #4560a2;
+  background: var(--ui-chip-bg);
+  color: var(--ui-chip-text);
   font-size: 0.73rem;
   font-weight: 700;
   padding: 4px 8px;
@@ -125,7 +125,7 @@
   align-items: center;
   gap: 9px;
   text-decoration: none;
-  border: 1px solid rgba(79, 98, 155, 0.2);
+  border: 1px solid var(--ui-chip-border);
   border-radius: 11px;
   background: rgba(255, 255, 255, 0.9);
   color: #39476d;
@@ -178,13 +178,13 @@
 }
 
 .sidebarLink:hover {
-  background: rgba(242, 247, 255, 0.96);
-  border-color: rgba(55, 88, 168, 0.35);
+  background: var(--ui-chip-active-bg);
+  border-color: var(--ui-chip-active-border);
   transform: translateX(2px);
 }
 
 .sidebarLinkActive {
-  background: linear-gradient(130deg, rgba(228, 239, 255, 0.95), rgba(236, 250, 250, 0.94));
+  background: rgba(228, 239, 255, 0.95);
   border-color: rgba(45, 84, 179, 0.44);
   box-shadow:
     0 4px 10px rgba(39, 72, 144, 0.12),
@@ -227,11 +227,11 @@
 }
 
 .submitPanel {
-  background: linear-gradient(135deg, rgba(236, 246, 255, 0.52), rgba(255, 255, 255, 0)) !important;
+  background: rgba(236, 246, 255, 0.52) !important;
 }
 
 .teamsTopPanel {
-  background: linear-gradient(135deg, rgba(236, 249, 255, 0.54), rgba(255, 255, 255, 0)) !important;
+  background: rgba(236, 249, 255, 0.54) !important;
 }
 
 .teamActionList {
@@ -318,26 +318,6 @@
   gap: 8px;
 }
 
-@media (max-width: 1200px) {
-  .detailLayout {
-    grid-template-columns: 1fr;
-  }
-
-  .funnelSteps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .sectionSidebar {
-    position: static;
-  }
-}
-
-@media (max-width: 760px) {
-  .funnelSteps {
-    grid-template-columns: 1fr;
-  }
-}
-
 .rejectButton {
   border-color: rgba(165, 35, 53, 0.35);
   color: #982539;
@@ -354,3 +334,7 @@
   color: #556085;
   font-weight: 600;
 }
+
+
+
+

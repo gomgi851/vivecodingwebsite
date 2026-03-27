@@ -1,10 +1,11 @@
 .stateBlock {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px dashed rgba(66, 84, 150, 0.28);
-  border-radius: 16px;
+  background: rgba(255, 251, 243, 0.95);
+  border: 1px dashed rgba(45, 55, 68, 0.28);
+  border-radius: 18px;
   padding: 24px;
   display: grid;
   gap: 10px;
+  box-shadow: 0 12px 24px rgba(30, 39, 54, 0.12);
 }
 
 .stateBlock h1,
@@ -14,10 +15,10 @@
 
 .stateBlock p {
   margin: 0;
-  color: #46506f;
+  color: #5e6777;
 }
 
 .error {
-  background: rgba(255, 239, 241, 0.9);
-  border-color: rgba(179, 40, 56, 0.35);
+  background: rgba(255, 239, 241, 0.92);
+  border-color: rgba(156, 34, 52, 0.38);
 }

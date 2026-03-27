@@ -1,0 +1,16 @@
+.section {
+  border: 1px solid var(--ui-card-border);
+  border-radius: 16px;
+  background: var(--ui-card-bg);
+  box-shadow: var(--ui-card-shadow);
+  padding: 15px;
+}
+
+.title {
+  margin: 0 0 10px;
+  color: var(--ui-card-title);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

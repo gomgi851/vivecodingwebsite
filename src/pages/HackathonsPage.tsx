@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+﻿import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { EmptyState, ErrorState, LoadingState } from '../components/StateBlocks'
+import { MainSidebarSection } from '../maincomponent/MainSidebarSection'
 import { useAppData } from '../store/AppDataContext'
 import type { Hackathon, HackathonDetail, Team } from '../types'
 import styles from './HackathonsPage.module.css'
@@ -461,8 +462,7 @@ export function HackathonsPage() {
     <section className={`${styles.pageShell} ${reduceMotion ? styles.reduceMotion : ''}`}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarSticky}>
-          <article className={styles.sideCard}>
-            <h2>빠른 보기</h2>
+          <MainSidebarSection title="빠른 보기">
             <div className={styles.quickViewGrid}>
               <button
                 type="button"
@@ -509,10 +509,9 @@ export function HackathonsPage() {
                 </button>
               ))}
             </div>
-          </article>
+          </MainSidebarSection>
 
-          <article className={styles.sideCard}>
-            <h2>저장된 뷰</h2>
+          <MainSidebarSection title="저장된 뷰">
             <div className={styles.savedViewList}>
               {savedViews.map((view) => (
                 <button key={view.key} type="button" className={styles.savedViewButton} onClick={() => applySavedView(view.query)}>
@@ -521,10 +520,9 @@ export function HackathonsPage() {
                 </button>
               ))}
             </div>
-          </article>
+          </MainSidebarSection>
 
-          <article className={styles.sideCard}>
-            <h2>컨텍스트 인사이트</h2>
+          <MainSidebarSection title="컨텍스트 인사이트">
             <div className={styles.contextGrid}>
               <div className={styles.contextItem}>
                 <span>결과 수</span>
@@ -539,10 +537,9 @@ export function HackathonsPage() {
                 <strong>{contextOpenTeamTotal}</strong>
               </div>
             </div>
-          </article>
+          </MainSidebarSection>
 
-          <article className={styles.sideCard}>
-            <h2>최근 본 해커톤</h2>
+          <MainSidebarSection title="최근 본 해커톤">
             {recentViewedItems.length ? (
               <div className={styles.recentList}>
                 {recentViewedItems.map((item) => (
@@ -560,10 +557,9 @@ export function HackathonsPage() {
             ) : (
               <p className="muted">상세 페이지를 열면 여기에 최근 3개가 표시됩니다.</p>
             )}
-          </article>
+          </MainSidebarSection>
 
-          <article className={styles.sideCard}>
-            <h2>심사 포인트 체크</h2>
+          <MainSidebarSection title="심사 포인트 체크">
             <div className={styles.checkList}>
               <label>
                 <input
@@ -598,23 +594,20 @@ export function HackathonsPage() {
                 문서
               </label>
             </div>
-          </article>
+          </MainSidebarSection>
 
-          <article className={styles.sideCard}>
-            <h2>접근성</h2>
+          <MainSidebarSection title="접근성">
             <label className={styles.reduceMotionToggle}>
               <input type="checkbox" checked={reduceMotion} onChange={() => setReduceMotion((prev) => !prev)} />
               사이드바 모션 줄이기
             </label>
-          </article>
+          </MainSidebarSection>
 
         </div>
       </aside>
 
       <div className={`stack-lg ${styles.mainColumn}`}>
-        <header className={`page-header ${styles.headerBar}`}>
-          <h1>해커톤 탐색</h1>
-          <p>필터는 메인에서, 결정은 좌측 패널에서 빠르게 진행하세요.</p>
+        <header className={`page-header ${styles.headerBar}`}>`r`n          <p>필터는 메인에서, 결정은 좌측 패널에서 빠르게 진행하세요.</p>
           <div className={styles.insightChips}>
             <span className={styles.insightChip}>전체 {hackathons.length}</span>
             <span className={`${styles.insightChip} ${styles.insightChipOngoing}`}>진행중 {quickViewCounts.ongoing}</span>
@@ -831,3 +824,5 @@ export function HackathonsPage() {
     </section>
   )
 }
+
+
