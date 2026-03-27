@@ -11,6 +11,12 @@ node_modules
 dist
 dist-ssr
 *.local
+Ahn/
+Choi/
+.github/
+skill.sh
+skill.ps1
+skills-lock.json
 
 # Editor directories and files
 .vscode/*
