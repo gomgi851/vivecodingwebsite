@@ -1,6 +1,6 @@
 .headerBar {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .campLayout {
@@ -8,25 +8,36 @@
   grid-template-columns: var(--split-layout-sidebar-width) minmax(0, 1fr);
   gap: var(--split-layout-gap);
   align-items: stretch;
-  height: auto;
-  min-height: 0;
-  overflow: visible;
+  height: var(--split-layout-height);
+  min-height: var(--split-layout-min-height);
+  overflow: hidden;
 }
 
 .sidebar {
-  max-height: none;
-  overflow: visible;
+  max-height: 100%;
+  min-height: 0;
+  overflow: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   display: grid;
+  align-content: start;
+  grid-auto-rows: max-content;
   gap: 12px;
-  padding-right: 0;
+  padding-right: 6px;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .sidebarCard {
   border: 1px solid rgba(71, 84, 145, 0.18);
-  border-radius: 14px;
+  border-radius: 16px;
   background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 10px 22px rgba(51, 69, 122, 0.08);
-  padding: 16px;
+  box-shadow: 0 8px 18px rgba(51, 69, 122, 0.08);
+  padding: 15px;
+  align-self: start;
 }
 
 .sidebarTitle {
@@ -45,6 +56,7 @@
 
 .sidebarActions :global(.button) {
   width: 100%;
+  min-height: 44px;
 }
 
 .sidebarStats {
@@ -104,17 +116,18 @@
 
 .mainColumn {
   min-width: 0;
-  max-height: none;
-  overflow: visible;
-  padding-right: 0;
+  max-height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 6px;
   display: grid;
-  gap: 18px;
+  gap: 20px;
 }
 
 .insightChips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .insightChip {
@@ -122,9 +135,9 @@
   border-radius: 999px;
   background: rgba(245, 249, 255, 0.95);
   color: #314573;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  padding: 5px 10px;
+  padding: 6px 11px;
 }
 
 .insightChipOpen {
@@ -140,14 +153,46 @@
 }
 
 .filterWrap {
-  background: rgba(255, 255, 255, 0.72);
+  display: grid !important;
+  grid-template-columns:
+    minmax(260px, 1.25fr)
+    minmax(220px, 1fr)
+    minmax(200px, 0.95fr)
+    minmax(170px, 0.8fr)
+    minmax(170px, 0.8fr);
+  gap: 14px;
+  align-items: end;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.86), rgba(247, 251, 255, 0.8));
   border: 1px solid rgba(71, 84, 145, 0.18);
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 15px;
+}
+
+.filterWrap label {
+  min-width: 0;
+}
+
+.filterWrap :global(.button) {
+  width: 100%;
 }
 
 .queryNotice {
   margin: -6px 2px 6px;
+}
+
+.resultMeta {
+  border: 1px solid rgba(71, 84, 145, 0.16);
+  border-radius: 12px;
+  background: rgba(248, 252, 255, 0.88);
+  padding: 10px 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.resultMeta p {
+  margin: 0;
+  color: #334367;
+  font-size: 0.9rem;
 }
 
 .activeFilters {
@@ -172,7 +217,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
+}
+
+.listHeader h2 {
+  margin: 0;
 }
 
 .teamGrid {
@@ -182,13 +231,23 @@
 }
 
 .teamCard {
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.95), rgba(242, 248, 255, 0.88));
-  border-radius: 20px;
+  background: linear-gradient(142deg, rgba(255, 255, 255, 0.96), rgba(243, 249, 255, 0.9));
+  border-radius: 18px;
+  border: 1px solid rgba(71, 84, 145, 0.16);
+  box-shadow: 0 9px 20px rgba(51, 69, 122, 0.08);
+  padding: 16px;
   min-height: 312px;
   display: grid;
   align-content: start;
-  gap: 12px;
+  gap: 11px;
   position: relative;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.teamCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px rgba(51, 69, 122, 0.12);
+  border-color: rgba(65, 99, 188, 0.3);
 }
 
 .cardMedia {
@@ -219,15 +278,18 @@
 
 .teamIntro {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: 76px;
+  line-height: 1.45;
 }
 
 .metaChips {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  margin-top: 2px;
 }
 
 .metaChip {
@@ -247,17 +309,14 @@
 }
 
 .cardFooter {
-  margin-top: 14px;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
   gap: 10px;
-  width: 100%;
 }
 
 .cardFooter :global(.button) {
-  flex: 1 1 0;
-  min-width: 0;
+  width: 100%;
   padding: 9px 10px;
   font-size: 0.86rem;
   white-space: nowrap;
@@ -393,6 +452,10 @@
   .teamGrid {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   }
+
+  .filterWrap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 980px) {
@@ -408,5 +471,13 @@
     max-height: none;
     overflow: visible;
     padding-right: 0;
+  }
+
+  .filterWrap {
+    grid-template-columns: 1fr;
+  }
+
+  .filterWrap :global(.button) {
+    grid-column: auto;
   }
 }

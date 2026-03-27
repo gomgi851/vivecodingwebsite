@@ -69,11 +69,18 @@
 .boardButton strong {
   font-size: 0.82rem;
   line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .boardButton span {
   font-size: 0.75rem;
   color: #536289;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .boardButtonActive {
@@ -124,19 +131,25 @@
 }
 
 .insightChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(240px, 1.4fr);
+  gap: 10px;
+  align-items: stretch;
 }
 
 .insightChip {
   border: 1px solid rgba(72, 91, 154, 0.2);
-  border-radius: 999px;
+  border-radius: 14px;
   background: rgba(245, 249, 255, 0.95);
   color: #314573;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  padding: 5px 10px;
+  min-height: 46px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .insightChipTop {
@@ -149,11 +162,16 @@
   border-color: rgba(80, 101, 181, 0.24);
   background: rgba(236, 242, 255, 0.92);
   color: #2c4680;
+  justify-content: flex-start;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .filterBar {
   display: grid !important;
-  grid-template-columns: minmax(260px, 1.25fr) minmax(220px, 1fr) minmax(170px, 0.7fr) minmax(170px, 0.7fr);
+  grid-template-columns: minmax(240px, 1.25fr) minmax(200px, 1fr) minmax(170px, 0.72fr) minmax(170px, 0.72fr) minmax(150px, 0.6fr);
   align-items: end;
   gap: 14px;
   background: linear-gradient(150deg, rgba(255, 255, 255, 0.86), rgba(247, 251, 255, 0.8));
@@ -164,8 +182,44 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
+.resultMeta {
+  border: 1px solid rgba(71, 84, 145, 0.16);
+  border-radius: 12px;
+  background: rgba(248, 252, 255, 0.88);
+  padding: 10px 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.resultMeta p {
+  margin: 0;
+  color: #334367;
+  font-size: 0.9rem;
+}
+
+.activeFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.activeFilterChip {
+  border: 1px solid rgba(72, 91, 154, 0.24);
+  border-radius: 999px;
+  background: rgba(239, 246, 255, 0.92);
+  color: #2f466f;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
 .filterBar label {
   min-width: 0;
+}
+
+.filterBar button {
+  width: 100%;
 }
 
 .topGrid {
@@ -296,8 +350,12 @@
     gap: var(--split-layout-gap-narrow);
   }
 
-  .filterBar {
+  .insightChips {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filterBar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -319,6 +377,15 @@
   .filterBar {
     grid-template-columns: 1fr;
     overflow: visible;
+  }
+
+  .insightChips {
+    grid-template-columns: 1fr;
+  }
+
+  .insightChip {
+    justify-content: flex-start;
+    text-align: left;
   }
 }
 

@@ -1,13 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>vivecoding_app</title>
+    <meta name="description" content="해커톤 탐색, 팀 구성, 제출, 랭킹까지 이어지는 VibeCoder 운영 허브" />
+    <meta name="theme-color" content="#2458d3" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css" />
+    <link rel="preload" href="/data/public_hackathons.json" as="fetch" crossorigin="anonymous" />
+    <link rel="preload" href="/data/public_hackathon_detail.json" as="fetch" crossorigin="anonymous" />
+    <link rel="preload" href="/data/public_teams.json" as="fetch" crossorigin="anonymous" />
+    <link rel="preload" href="/data/public_leaderboard.json" as="fetch" crossorigin="anonymous" />
+    <title>VibeCoder Hackathon Hub</title>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

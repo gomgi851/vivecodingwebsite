@@ -16,6 +16,7 @@ export const STORAGE_KEYS = {
   teams: 'teams',
   submissions: 'submissions',
   leaderboards: 'leaderboards',
+  detailsBySlug: 'details_by_slug',
 } as const
 
 type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS]
@@ -103,21 +104,51 @@ export async function bootstrapStore(): Promise<{
   detailsBySlug: Record<string, HackathonDetail>
   snapshot: ReturnType<typeof readSnapshot>
 }> {
-  const detailRaw = await fetchJson<DetailSeed>('/data/public_hackathon_detail.json')
-  const detailsBySlug = normalizeDetails(detailRaw)
+  const missingSeed = isAnySeedMissing()
+  const cachedDetails = readJson(
+    STORAGE_KEYS.detailsBySlug,
+    {} as Record<string, HackathonDetail>,
+  )
+  const hasCachedDetails = Object.keys(cachedDetails).length > 0
+  const detailPromise = hasCachedDetails
+    ? null
+    : fetchJson<DetailSeed>('/data/public_hackathon_detail.json')
 
-  if (isAnySeedMissing()) {
+  if (missingSeed) {
     const [hackathons, teamsRaw, leaderboardRaw] = await Promise.all([
       fetchJson<Hackathon[]>('/data/public_hackathons.json'),
       fetchJson<Team[]>('/data/public_teams.json'),
       fetchJson<LeaderboardSeed>('/data/public_leaderboard.json'),
     ])
 
+    let detailsBySlug = cachedDetails
+    if (!hasCachedDetails) {
+      const detailRaw = await detailPromise
+      detailsBySlug = normalizeDetails(detailRaw as DetailSeed)
+      writeJson(STORAGE_KEYS.detailsBySlug, detailsBySlug)
+    }
+
     writeJson(STORAGE_KEYS.hackathons, hackathons)
     writeJson(STORAGE_KEYS.teams, normalizeTeams(teamsRaw))
     writeJson(STORAGE_KEYS.submissions, [] as Submission[])
     writeJson(STORAGE_KEYS.leaderboards, normalizeLeaderboards(leaderboardRaw))
+
+    return {
+      detailsBySlug,
+      snapshot: readSnapshot(),
+    }
   }
+
+  if (hasCachedDetails) {
+    return {
+      detailsBySlug: cachedDetails,
+      snapshot: readSnapshot(),
+    }
+  }
+
+  const detailRaw = await detailPromise
+  const detailsBySlug = normalizeDetails(detailRaw as DetailSeed)
+  writeJson(STORAGE_KEYS.detailsBySlug, detailsBySlug)
 
   return {
     detailsBySlug,

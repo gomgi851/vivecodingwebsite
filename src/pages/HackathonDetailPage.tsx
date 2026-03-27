@@ -55,6 +55,14 @@ function formatDate(value?: string) {
   return new Date(value).toLocaleString('ko-KR')
 }
 
+function getDaysLeft(value?: string) {
+  if (!value) return null
+  const target = new Date(value).getTime()
+  if (!Number.isFinite(target) || target <= 0) return null
+  const diff = Math.ceil((target - Date.now()) / (24 * 60 * 60 * 1000))
+  return diff
+}
+
 function getCurrentMembers(team: { currentMemberCount?: number; memberCount?: number }) {
   return Math.max(1, Number(team.currentMemberCount ?? team.memberCount ?? 1) || 1)
 }
@@ -232,6 +240,19 @@ export function HackathonDetailPage() {
     .sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())
     .slice(0, 5)
   const previewScore = computeScore(form.participant, form.judge)
+  const submissionDeadline = hackathon.period?.submissionDeadlineAt || hackathon.period?.endAt
+  const deadlineDaysLeft = getDaysLeft(submissionDeadline)
+  const funnelSteps = [
+    { key: 'apply', label: '참가 신청', done: Boolean(myApplication) },
+    { key: 'team', label: '팀 구성', done: teamRows.length > 0 },
+    {
+      key: 'submit',
+      label: '제출 완료',
+      done: recentSubmissions.some((item) => item.status === 'submitted'),
+    },
+    { key: 'rank', label: '랭킹 반영', done: entries.length > 0 },
+  ]
+  const funnelDoneCount = funnelSteps.filter((item) => item.done).length
   const readinessItems = [
     { label: '팀명 입력', done: Boolean(form.teamName.trim()) },
     { label: '기획서 제목 입력', done: Boolean(form.planTitle.trim()) },
@@ -504,6 +525,40 @@ export function HackathonDetailPage() {
             <p className="metric-value">{recentSubmissions.length}</p>
           </article>
         </div>
+
+        <section className={styles.funnelBar} aria-label="진행 단계">
+          <div className={styles.funnelHead}>
+            <strong>
+              진행도 {funnelDoneCount}/{funnelSteps.length}
+            </strong>
+            <span>
+              제출 마감: {formatDate(submissionDeadline)}
+              {deadlineDaysLeft !== null
+                ? deadlineDaysLeft < 0
+                  ? ' · 마감 종료'
+                  : deadlineDaysLeft === 0
+                    ? ' · D-Day'
+                    : ` · D-${deadlineDaysLeft}`
+                : ''}
+            </span>
+          </div>
+          <div className={styles.funnelSteps}>
+            {funnelSteps.map((item, index) => (
+              <div key={item.key} className={item.done ? `${styles.funnelStep} ${styles.funnelStepDone}` : styles.funnelStep}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{item.label}</strong>
+              </div>
+            ))}
+          </div>
+          <div className="inline-actions">
+            <a className="button" href="#submit">
+              지금 제출 섹션으로 이동
+            </a>
+            <Link className="button secondary" to={`/camp?hackathon=${slug}`}>
+              팀 구성 화면 열기
+            </Link>
+          </div>
+        </section>
       </header>
 
       <section className={styles.detailLayout}>
@@ -825,6 +880,9 @@ export function HackathonDetailPage() {
 
           <section className={`panel ${styles.submitPanel}`} id="submit">
             <h2>제출(Submit)</h2>
+            <p className={styles.submitLead}>
+              팀 구성과 필수 항목 입력을 먼저 완료한 뒤 제출하세요. 제출 버튼을 누르면 리더보드가 즉시 갱신됩니다.
+            </p>
             <ul className="list">
               {(section.submit?.guide || []).map((item) => (
                 <li key={item}>{item}</li>
@@ -912,7 +970,11 @@ export function HackathonDetailPage() {
                 </button>
               </div>
             </form>
-            {message ? <p className="alert">{message}</p> : null}
+            {message ? (
+              <p className="alert" role="status" aria-live="polite">
+                {message}
+              </p>
+            ) : null}
           </section>
 
           <article className="panel">

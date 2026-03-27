@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { EmptyState, ErrorState, LoadingState } from '../components/StateBlocks'
 import { useAppData } from '../store/AppDataContext'
@@ -47,23 +47,38 @@ function parseTotalMembers(value: string | number) {
   return Math.max(1, Math.trunc(parsed))
 }
 
+function normalizeSort(value: string | null) {
+  if (value === 'open') return 'open'
+  if (value === 'members') return 'members'
+  return 'recent'
+}
+
+function asBooleanFlag(value: string | null) {
+  return value === '1'
+}
+
 export function CampPage() {
   const { loading, error, refresh, hackathons, teams, setTeams } = useAppData()
   const [searchParams, setSearchParams] = useSearchParams()
   const [viewerId] = useState<string>(() => getOrCreateViewerId())
-  const queryHackathon = searchParams.get('hackathon')
+  const queryHackathon = searchParams.get('hackathon') || 'all'
   const openMode = searchParams.get('open')
-  const isQueryLocked = Boolean(queryHackathon)
+  const queryKeyword = searchParams.get('q') || ''
+  const querySort = normalizeSort(searchParams.get('sort'))
+  const queryMine = asBooleanFlag(searchParams.get('mine'))
+  const queryOpenOnly = asBooleanFlag(searchParams.get('openOnly'))
+  const queryMessaged = asBooleanFlag(searchParams.get('messaged'))
+  const [lockedHackathon] = useState(() => (queryHackathon !== 'all' ? queryHackathon : ''))
+  const isQueryLocked = Boolean(lockedHackathon)
   const shouldOpenCreate = openMode === 'create'
-  const initialHackathon = queryHackathon || 'all'
-  const [hackathonFilter, setHackathonFilter] = useState(initialHackathon)
-  const [keyword, setKeyword] = useState('')
-  const [sortBy, setSortBy] = useState('recent')
-  const [onlyMine, setOnlyMine] = useState(false)
-  const [onlyOpen, setOnlyOpen] = useState(false)
-  const [onlyMessaged, setOnlyMessaged] = useState(false)
+  const effectiveHackathonFilter = isQueryLocked ? lockedHackathon : queryHackathon
+  const keyword = queryKeyword
+  const sortBy = querySort
+  const onlyMine = queryMine
+  const onlyOpen = queryOpenOnly
+  const onlyMessaged = queryMessaged
   const [form, setForm] = useState({
-    hackathonSlug: initialHackathon !== 'all' ? initialHackathon : '',
+    hackathonSlug: effectiveHackathonFilter !== 'all' ? effectiveHackathonFilter : '',
     name: '',
     intro: '',
     isOpen: true,
@@ -78,6 +93,7 @@ export function CampPage() {
   const [messageTarget, setMessageTarget] = useState<Team | null>(null)
   const [messageText, setMessageText] = useState('')
   const [messageSnapshot, setMessageSnapshot] = useState<DirectMessage[]>(() => readStoredMessages())
+  const [copiedView, setCopiedView] = useState(false)
 
   useEffect(() => {
     if (!notice) return
@@ -87,34 +103,66 @@ export function CampPage() {
     return () => window.clearTimeout(timer)
   }, [notice])
 
-  if (loading) return <LoadingState title="팀 모집 정보를 불러오는 중..." />
-  if (error) return <ErrorState message={error} onRetry={refresh} />
+  useEffect(() => {
+    const next = new URLSearchParams()
+    if (isQueryLocked && effectiveHackathonFilter !== 'all') {
+      next.set('hackathon', effectiveHackathonFilter)
+    }
+    if (isEditorOpen) next.set('open', 'create')
+    if (keyword.trim()) next.set('q', keyword.trim())
+    if (sortBy !== 'recent') next.set('sort', sortBy)
+    if (onlyMine) next.set('mine', '1')
+    if (onlyOpen) next.set('openOnly', '1')
+    if (onlyMessaged) next.set('messaged', '1')
 
-  const effectiveHackathonFilter = isQueryLocked ? queryHackathon || 'all' : hackathonFilter
-  const sentTeamCodes = new Set(
-    messageSnapshot.filter((item) => item.senderId === viewerId && item.teamCode).map((item) => item.teamCode as string),
+    const currentQuery = searchParams.toString()
+    const nextQuery = next.toString()
+    if (currentQuery !== nextQuery) {
+      setSearchParams(next, { replace: true })
+    }
+  }, [effectiveHackathonFilter, isEditorOpen, isQueryLocked, keyword, onlyMessaged, onlyMine, onlyOpen, searchParams, setSearchParams, sortBy])
+
+  const sentTeamCodes = useMemo(
+    () =>
+      new Set(
+        messageSnapshot
+          .filter((item) => item.senderId === viewerId && item.teamCode)
+          .map((item) => item.teamCode as string),
+      ),
+    [messageSnapshot, viewerId],
   )
-  const unreadInboxCount = messageSnapshot.filter((item) => item.recipientId === viewerId && !item.readAt).length
+  const unreadInboxCount = useMemo(
+    () => messageSnapshot.filter((item) => item.recipientId === viewerId && !item.readAt).length,
+    [messageSnapshot, viewerId],
+  )
 
-  let visibleTeams = teams.filter((team) => {
-    if (effectiveHackathonFilter !== 'all' && team.hackathonSlug !== effectiveHackathonFilter) return false
-    if (onlyMine && team.ownerId !== viewerId) return false
-    if (onlyOpen && !(team.isOpen && getCurrentMembers(team) < getTotalMembers(team))) return false
-    if (onlyMessaged && !sentTeamCodes.has(team.teamCode)) return false
-    const q = keyword.trim().toLowerCase()
-    if (!q) return true
-    const text = `${team.name} ${team.intro} ${(team.lookingFor || []).join(' ')}`.toLowerCase()
-    return text.includes(q)
-  })
+  const visibleTeams = useMemo(() => {
+    const normalizedKeyword = keyword.trim().toLowerCase()
+    const rows = teams.filter((team) => {
+      if (effectiveHackathonFilter !== 'all' && team.hackathonSlug !== effectiveHackathonFilter) return false
+      if (onlyMine && team.ownerId !== viewerId) return false
+      if (onlyOpen && !(team.isOpen && getCurrentMembers(team) < getTotalMembers(team))) return false
+      if (onlyMessaged && !sentTeamCodes.has(team.teamCode)) return false
+      if (!normalizedKeyword) return true
+      const text = `${team.name} ${team.intro} ${(team.lookingFor || []).join(' ')}`.toLowerCase()
+      return text.includes(normalizedKeyword)
+    })
 
-  visibleTeams = [...visibleTeams].sort((a, b) => {
-    if (sortBy === 'members') return getCurrentMembers(b) - getCurrentMembers(a)
-    if (sortBy === 'open') return Number(b.isOpen) - Number(a.isOpen)
-    return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
-  })
+    return [...rows].sort((a, b) => {
+      if (sortBy === 'members') return getCurrentMembers(b) - getCurrentMembers(a)
+      if (sortBy === 'open') return Number(b.isOpen) - Number(a.isOpen)
+      return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    })
+  }, [effectiveHackathonFilter, keyword, onlyMessaged, onlyMine, onlyOpen, sentTeamCodes, sortBy, teams, viewerId])
 
-  const openCount = visibleTeams.filter((team) => team.isOpen && getCurrentMembers(team) < getTotalMembers(team)).length
-  const myCount = visibleTeams.filter((team) => team.ownerId === viewerId).length
+  const openCount = useMemo(
+    () => visibleTeams.filter((team) => team.isOpen && getCurrentMembers(team) < getTotalMembers(team)).length,
+    [visibleTeams],
+  )
+  const myCount = useMemo(
+    () => visibleTeams.filter((team) => team.ownerId === viewerId).length,
+    [viewerId, visibleTeams],
+  )
   const hasActiveFilter =
     Boolean(keyword.trim()) ||
     effectiveHackathonFilter !== 'all' ||
@@ -122,11 +170,27 @@ export function CampPage() {
     onlyMine ||
     onlyOpen ||
     onlyMessaged
-  const hackathonTitleBySlug = new Map(hackathons.map((item) => [item.slug, item.title]))
-  const myTeamsAll = teams.filter((team) => team.ownerId === viewerId)
-  const myOpenTeams = myTeamsAll.filter((team) => team.isOpen && getCurrentMembers(team) < getTotalMembers(team))
-  const fullTeamCount = teams.filter((team) => getCurrentMembers(team) >= getTotalMembers(team)).length
-  const noOwnerTeamCount = teams.filter((team) => !team.ownerId).length
+  const activeFilterCount =
+    Number(Boolean(keyword.trim())) +
+    Number(effectiveHackathonFilter !== 'all') +
+    Number(sortBy !== 'recent') +
+    Number(onlyMine) +
+    Number(onlyOpen) +
+    Number(onlyMessaged)
+  const hackathonTitleBySlug = useMemo(
+    () => new Map(hackathons.map((item) => [item.slug, item.title])),
+    [hackathons],
+  )
+  const myTeamsAll = useMemo(() => teams.filter((team) => team.ownerId === viewerId), [teams, viewerId])
+  const myOpenTeams = useMemo(
+    () => myTeamsAll.filter((team) => team.isOpen && getCurrentMembers(team) < getTotalMembers(team)),
+    [myTeamsAll],
+  )
+  const fullTeamCount = useMemo(
+    () => teams.filter((team) => getCurrentMembers(team) >= getTotalMembers(team)).length,
+    [teams],
+  )
+  const noOwnerTeamCount = useMemo(() => teams.filter((team) => !team.ownerId).length, [teams])
   const avgFillRate = myTeamsAll.length
     ? Math.round(
         (myTeamsAll.reduce((acc, team) => acc + getCurrentMembers(team) / getTotalMembers(team), 0) / myTeamsAll.length) *
@@ -135,34 +199,53 @@ export function CampPage() {
     : 0
   const contextLabel =
     effectiveHackathonFilter === 'all' ? '전체 해커톤' : getHackathonLabel(effectiveHackathonFilter)
-  const contextRecruitingCount = teams.filter((team) => {
-    if (effectiveHackathonFilter !== 'all' && team.hackathonSlug !== effectiveHackathonFilter) return false
-    return team.isOpen && getCurrentMembers(team) < getTotalMembers(team)
-  }).length
+  const contextRecruitingCount = useMemo(
+    () =>
+      teams.filter((team) => {
+        if (effectiveHackathonFilter !== 'all' && team.hackathonSlug !== effectiveHackathonFilter) return false
+        return team.isOpen && getCurrentMembers(team) < getTotalMembers(team)
+      }).length,
+    [effectiveHackathonFilter, teams],
+  )
+
+  if (loading) return <LoadingState title="팀 모집 정보를 불러오는 중..." />
+  if (error) return <ErrorState message={error} onRetry={refresh} />
 
   function changeFilter(value: string) {
     if (isQueryLocked) return
-    setHackathonFilter(value)
-    if (value === 'all') {
-      setSearchParams({})
-    } else {
-      setSearchParams({ hackathon: value })
-    }
+    const next = new URLSearchParams(searchParams)
+    if (value === 'all') next.delete('hackathon')
+    else next.set('hackathon', value)
+    setSearchParams(next, { replace: true })
     setForm((prev) => ({
       ...prev,
       hackathonSlug: value === 'all' ? '' : value,
     }))
   }
 
-  function resetAllFilters() {
-    setKeyword('')
-    setSortBy('recent')
-    setOnlyMine(false)
-    setOnlyOpen(false)
-    setOnlyMessaged(false)
-    if (!isQueryLocked) {
-      changeFilter('all')
+  function updateQueryValue(key: 'q' | 'sort' | 'mine' | 'openOnly' | 'messaged', value: string) {
+    const next = new URLSearchParams(searchParams)
+    const defaults = {
+      q: '',
+      sort: 'recent',
+      mine: '0',
+      openOnly: '0',
+      messaged: '0',
     }
+    if (!value || value === defaults[key]) next.delete(key)
+    else next.set(key, value)
+    setSearchParams(next, { replace: true })
+  }
+
+  function resetAllFilters() {
+    const next = new URLSearchParams(searchParams)
+    next.delete('q')
+    next.delete('sort')
+    next.delete('mine')
+    next.delete('openOnly')
+    next.delete('messaged')
+    if (!isQueryLocked) next.delete('hackathon')
+    setSearchParams(next, { replace: true })
   }
 
   function updateForm(key: string, value: string | boolean) {
@@ -293,6 +376,27 @@ export function CampPage() {
     setMessageText('')
   }
 
+  async function copyCurrentView() {
+    if (typeof window === 'undefined' || typeof navigator === 'undefined' || !navigator.clipboard) return
+    const query = new URLSearchParams()
+    if (effectiveHackathonFilter !== 'all') query.set('hackathon', effectiveHackathonFilter)
+    if (isEditorOpen) query.set('open', 'create')
+    if (keyword.trim()) query.set('q', keyword.trim())
+    if (sortBy !== 'recent') query.set('sort', sortBy)
+    if (onlyMine) query.set('mine', '1')
+    if (onlyOpen) query.set('openOnly', '1')
+    if (onlyMessaged) query.set('messaged', '1')
+    const queryText = query.toString()
+    const targetUrl = `${window.location.origin}${window.location.pathname}${queryText ? `?${queryText}` : ''}`
+    try {
+      await navigator.clipboard.writeText(targetUrl)
+      setCopiedView(true)
+      window.setTimeout(() => setCopiedView(false), 1500)
+    } catch {
+      setCopiedView(false)
+    }
+  }
+
   function submitTeam(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!form.name.trim() || !form.intro.trim() || !form.contactUrl.trim()) {
@@ -386,21 +490,21 @@ export function CampPage() {
               <button
                 className={onlyMine ? 'button secondary' : 'button ghost'}
                 type="button"
-                onClick={() => setOnlyMine((prev) => !prev)}
+                onClick={() => updateQueryValue('mine', onlyMine ? '0' : '1')}
               >
                 {onlyMine ? '내 등록글 보기 해제' : '내 등록글만 보기'}
               </button>
               <button
                 className={onlyOpen ? 'button secondary' : 'button ghost'}
                 type="button"
-                onClick={() => setOnlyOpen((prev) => !prev)}
+                onClick={() => updateQueryValue('openOnly', onlyOpen ? '0' : '1')}
               >
                 {onlyOpen ? '모집중만 해제' : '모집중만 보기'}
               </button>
               <button
                 className={onlyMessaged ? 'button secondary' : 'button ghost'}
                 type="button"
-                onClick={() => setOnlyMessaged((prev) => !prev)}
+                onClick={() => updateQueryValue('messaged', onlyMessaged ? '0' : '1')}
               >
                 {onlyMessaged ? '쪽지 보낸 팀 해제' : '쪽지 보낸 팀 보기'}
               </button>
@@ -473,7 +577,7 @@ export function CampPage() {
               검색
               <input
                 value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
+                onChange={(e) => updateQueryValue('q', e.target.value)}
                 placeholder="팀명, 소개, 모집 포지션"
               />
             </label>
@@ -494,7 +598,7 @@ export function CampPage() {
             </label>
             <label>
               정렬
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              <select value={sortBy} onChange={(e) => updateQueryValue('sort', e.target.value)}>
                 <option value="recent">최신 생성순</option>
                 <option value="open">모집중 우선</option>
                 <option value="members">인원 많은순</option>
@@ -503,6 +607,15 @@ export function CampPage() {
             <button className="button ghost align-end" type="button" onClick={resetAllFilters}>
               필터 초기화
             </button>
+            <button className="button secondary align-end" type="button" onClick={copyCurrentView}>
+              {copiedView ? '뷰 링크 복사됨' : '현재 뷰 링크 복사'}
+            </button>
+          </section>
+          <section className={styles.resultMeta} aria-live="polite">
+            <p>
+              현재 결과 <strong>{visibleTeams.length}</strong>팀 · 활성 필터 <strong>{activeFilterCount}</strong>개
+            </p>
+            <p className="muted">탐색 중인 팀 목록 상태를 그대로 공유할 수 있습니다.</p>
           </section>
           {isQueryLocked ? (
             <p className={`muted ${styles.queryNotice}`}>
@@ -512,7 +625,7 @@ export function CampPage() {
           {hasActiveFilter ? (
             <section className={styles.activeFilters} aria-label="현재 적용 필터">
               {keyword.trim() ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => setKeyword('')}>
+                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('q', '')}>
                   검색: {keyword} ×
                 </button>
               ) : null}
@@ -522,22 +635,22 @@ export function CampPage() {
                 </button>
               ) : null}
               {sortBy !== 'recent' ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => setSortBy('recent')}>
+                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('sort', 'recent')}>
                   정렬: {sortBy === 'open' ? '모집중 우선' : '인원 많은순'} ×
                 </button>
               ) : null}
               {onlyMine ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => setOnlyMine(false)}>
+                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('mine', '0')}>
                   내 등록글만 ×
                 </button>
               ) : null}
               {onlyOpen ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => setOnlyOpen(false)}>
+                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('openOnly', '0')}>
                   모집중만 ×
                 </button>
               ) : null}
               {onlyMessaged ? (
-                <button className={styles.activeFilterChip} type="button" onClick={() => setOnlyMessaged(false)}>
+                <button className={styles.activeFilterChip} type="button" onClick={() => updateQueryValue('messaged', '0')}>
                   쪽지 보낸 팀 ×
                 </button>
               ) : null}
@@ -559,7 +672,7 @@ export function CampPage() {
                     const totalMembers = getTotalMembers(team)
                     const isRecruiting = team.isOpen && currentMembers < totalMembers
                     return (
-                      <div key={team.teamCode} className={`team-card ${styles.teamCard}`}>
+                      <div key={team.teamCode} className={`team-card cv-auto ${styles.teamCard}`}>
                         {team.ownerId === viewerId ? <span className={styles.ownerTag}>내 등록글</span> : null}
                         <div className={styles.cardMedia} aria-hidden="true">
                           <span className={styles.mediaFallback}>

@@ -60,6 +60,17 @@ export function HomePage() {
     )
     .slice(0, 3)
   const topBoardEntries = (latestBoard?.entries || []).slice(0, 3)
+  const todayChecklist = [
+    nextDeadline
+      ? `가장 가까운 마감은 ${formatDateShort(nextDeadline.period?.submissionDeadlineAt)}입니다. 제출 준비를 먼저 점검하세요.`
+      : '예정된 마감이 없습니다. 신규 해커톤 온보딩을 준비하세요.',
+    openTeams > 0
+      ? `현재 모집 중 팀 ${openTeams}개가 열려 있습니다. 팀 매칭이 필요한 참가자를 캠프로 유도하세요.`
+      : '모집 중인 팀이 적습니다. 캠프에서 새 팀 생성 유도를 강화하세요.',
+    latestSubmissions.length > 0
+      ? `최근 제출 ${latestSubmissions.length}건이 기록되었습니다. 랭킹 반영과 품질 체크를 진행하세요.`
+      : '아직 제출 기록이 없습니다. 상세 페이지에서 첫 제출을 유도하세요.',
+  ]
 
   return (
     <section className="stack-lg">
@@ -68,8 +79,8 @@ export function HomePage() {
           <p className="eyebrow">VibeCoder Platform</p>
           <h1>명세 기반으로 빠르게 완성하는 해커톤 운영 허브</h1>
           <p className="hero-copy">
-            해커톤 탐색부터 팀 구성, 제출, 랭킹 확인까지 한 흐름으로 이어지는 서비스입니다.
-            필요한 정보와 실행 버튼을 메인에서 바로 확인할 수 있습니다.
+            오늘 해야 할 일과 다음 액션을 한 화면에서 확인하고,
+            해커톤 탐색부터 팀 구성, 제출, 랭킹 반영까지 끊김 없이 진행할 수 있습니다.
           </p>
           <div className={styles.heroPills}>
             <span className={styles.heroPill}>진행 중 {activeCount}</span>
@@ -79,13 +90,13 @@ export function HomePage() {
           </div>
           <div className="inline-actions">
             <Link className="button" to="/hackathons">
-              해커톤 보러가기
+              지금 해커톤 탐색
             </Link>
             <Link className="button secondary" to="/camp">
-              팀 찾기
+              팀 매칭 시작
             </Link>
             <Link className="button ghost" to="/rankings">
-              랭킹 보기
+              성과 대시보드
             </Link>
           </div>
           <div className={styles.trustStrip}>
@@ -113,6 +124,15 @@ export function HomePage() {
           </p>
           <p className="muted">제출 동선: 목록 → 상세 → 팀 → 제출 → 랭킹</p>
         </aside>
+      </section>
+
+      <section className={styles.todayBoard}>
+        {todayChecklist.map((item) => (
+          <article key={item} className={styles.todayItem}>
+            <h2>Today</h2>
+            <p>{item}</p>
+          </article>
+        ))}
       </section>
 
       <section className={styles.bentoGrid}>

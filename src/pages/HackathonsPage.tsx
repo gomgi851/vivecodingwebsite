@@ -182,6 +182,7 @@ export function HackathonsPage() {
   const [recentViewedSlugs, setRecentViewedSlugs] = useState<string[]>(() => readStoredArray(RECENT_VIEW_KEY).slice(0, 3))
   const [qualityChecklist, setQualityChecklist] = useState<ChecklistState>(() => readStoredChecklist())
   const [selectedSlug, setSelectedSlug] = useState('')
+  const [copiedView, setCopiedView] = useState(false)
   const [reduceMotion, setReduceMotion] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false
     const stored = window.localStorage.getItem(REDUCE_MOTION_KEY)
@@ -286,8 +287,20 @@ export function HackathonsPage() {
 
   const hasActiveFilter =
     Boolean(keyword.trim()) || status !== 'all' || tag !== 'all' || sortBy !== 'end-asc' || quickView !== 'all'
+  const activeFilterCount = Number(Boolean(keyword.trim())) + Number(status !== 'all') + Number(tag !== 'all') + Number(sortBy !== 'end-asc') + Number(quickView !== 'all')
 
-  const savedViews = [
+  const savedViews: Array<{
+    key: string
+    label: string
+    description: string
+    query: {
+      status: string
+      tag: string
+      sort: SortKey
+      q: string
+      quick: QuickViewKey
+    }
+  }> = [
     {
       key: 'build-sprint',
       label: '빌드 스프린트',
@@ -390,6 +403,19 @@ export function HackathonsPage() {
 
   function resetAllFilters() {
     setSearchParams({})
+  }
+
+  async function copyCurrentView() {
+    if (typeof window === 'undefined' || typeof navigator === 'undefined' || !navigator.clipboard) return
+    const query = searchParams.toString()
+    const targetUrl = `${window.location.origin}${window.location.pathname}${query ? `?${query}` : ''}`
+    try {
+      await navigator.clipboard.writeText(targetUrl)
+      setCopiedView(true)
+      window.setTimeout(() => setCopiedView(false), 1400)
+    } catch {
+      setCopiedView(false)
+    }
   }
 
   function selectTagFromCard(nextTag: string, e: React.MouseEvent<HTMLButtonElement>) {
@@ -639,6 +665,16 @@ export function HackathonsPage() {
           <button className="button ghost align-end" type="button" onClick={resetAllFilters}>
             필터 초기화
           </button>
+          <button className="button secondary align-end" type="button" onClick={copyCurrentView}>
+            {copiedView ? '뷰 링크 복사됨' : '현재 뷰 링크 복사'}
+          </button>
+        </section>
+
+        <section className={styles.resultMeta} aria-live="polite">
+          <p>
+            현재 결과 <strong>{filtered.length}</strong>개 · 활성 필터 <strong>{activeFilterCount}</strong>개
+          </p>
+          <p className="muted">공유 가능한 검색 상태를 유지한 채 상세 페이지로 이동할 수 있습니다.</p>
         </section>
 
         {hasActiveFilter ? (
@@ -682,7 +718,7 @@ export function HackathonsPage() {
               return (
                 <article
                   key={item.slug}
-                  className={`${styles.hackathonCard} ${isSelected ? styles.hackathonCardSelected : ''}`}
+                  className={`cv-auto ${styles.hackathonCard} ${isSelected ? styles.hackathonCardSelected : ''}`}
                   onClick={() => openDetail(item.slug)}
                   onMouseEnter={() => setSelectedSlug(item.slug)}
                   onFocus={() => setSelectedSlug(item.slug)}

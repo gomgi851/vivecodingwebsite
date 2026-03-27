@@ -5,6 +5,68 @@
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(236, 245, 255, 0.86));
 }
 
+.funnelBar {
+  margin-top: 8px;
+  border: 1px solid rgba(67, 95, 167, 0.22);
+  border-radius: 14px;
+  background: rgba(248, 252, 255, 0.9);
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.funnelHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  color: #33466f;
+  font-size: 0.85rem;
+}
+
+.funnelHead strong {
+  font-size: 0.92rem;
+  color: #1f3f84;
+}
+
+.funnelSteps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.funnelStep {
+  border: 1px solid rgba(77, 98, 158, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 9px;
+  display: grid;
+  gap: 2px;
+}
+
+.funnelStep span {
+  font-size: 0.72rem;
+  color: #637094;
+  font-weight: 700;
+}
+
+.funnelStep strong {
+  font-size: 0.84rem;
+  color: #32456f;
+}
+
+.funnelStepDone {
+  border-color: rgba(31, 138, 84, 0.34);
+  background: rgba(232, 252, 242, 0.92);
+}
+
+.submitLead {
+  margin: 0 0 10px;
+  color: #3a4b72;
+  font-size: 0.9rem;
+}
+
 .detailLayout {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
@@ -261,8 +323,18 @@
     grid-template-columns: 1fr;
   }
 
+  .funnelSteps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .sectionSidebar {
     position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .funnelSteps {
+    grid-template-columns: 1fr;
   }
 }
 

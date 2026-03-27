@@ -8,13 +8,32 @@
   padding: 0 0 26px;
 }
 
+.skipLink {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 100;
+  border: 1px solid rgba(29, 71, 173, 0.5);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1e428b;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 8px 11px;
+  transition: top 0.16s ease;
+}
+
+.skipLink:focus {
+  top: 10px;
+}
+
 .topbar {
   position: sticky;
   top: 0;
   z-index: 20;
   border-bottom: 1px solid #d8dde6;
   background: #f4f5f7;
-  min-height: 84px;
+  min-height: 72px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -37,6 +56,11 @@
   text-decoration: none;
 }
 
+.brandTextWrap {
+  display: grid;
+  gap: 1px;
+}
+
 .brandBadge {
   width: 38px;
   height: 38px;
@@ -52,11 +76,20 @@
 .brandTitle {
   margin: 0;
   color: #1960c5;
-  font-size: 1.55rem;
+  font-size: 1.44rem;
   font-weight: 800;
-  font-family: var(--font-emphasis);
+  font-family: var(--font-display);
   letter-spacing: -0.03em;
   white-space: nowrap;
+}
+
+.brandSubtitle {
+  margin: 0;
+  color: #5f6d92;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .topnav {
@@ -97,6 +130,23 @@
   justify-content: flex-end;
   gap: 8px;
   margin-left: auto;
+}
+
+.statusRibbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statusRibbon span {
+  border: 1px solid rgba(67, 91, 161, 0.24);
+  border-radius: 999px;
+  background: rgba(241, 247, 255, 0.92);
+  color: #2e466f;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 9px;
+  white-space: nowrap;
 }
 
 .inboxButton {
@@ -183,7 +233,7 @@
 }
 
 .quickJump input {
-  width: 228px;
+  width: 244px;
   border: 1px solid rgba(71, 84, 145, 0.28);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.95);
@@ -209,7 +259,7 @@
 
 @media (max-width: 1200px) {
   .brandTitle {
-    font-size: 1.35rem;
+    font-size: 1.24rem;
   }
 
   .topnav {
@@ -224,11 +274,16 @@
 
   .topbar {
     padding: 0 14px;
-    min-height: 76px;
+    min-height: 66px;
   }
 
   .brandTitle {
-    font-size: 1.12rem;
+    font-size: 1.06rem;
+  }
+
+  .brandSubtitle,
+  .statusRibbon {
+    display: none;
   }
 
   .menuItem {

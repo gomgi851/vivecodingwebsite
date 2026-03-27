@@ -27,7 +27,7 @@
 
 .sidebarSticky {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .mainColumn {
@@ -35,15 +35,15 @@
   max-height: none;
   overflow: visible;
   padding-right: 0;
-  gap: 16px;
+  gap: 20px;
 }
 
 .sideCard {
   border: 1px solid rgba(71, 84, 145, 0.18);
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 15px;
   background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 10px 22px rgba(51, 69, 122, 0.08);
+  box-shadow: 0 8px 18px rgba(51, 69, 122, 0.08);
 }
 
 .sideCard h2 {
@@ -58,7 +58,7 @@
 .quickViewGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 9px;
+  gap: 10px;
 }
 
 .quickViewButton {
@@ -66,11 +66,12 @@
   border-radius: 11px;
   background: rgba(246, 250, 255, 0.85);
   color: #445071;
-  padding: 10px;
+  padding: 10px 11px;
   display: grid;
-  gap: 2px;
+  gap: 3px;
   text-align: left;
   cursor: pointer;
+  min-height: 72px;
   transition: border-color 0.16s ease, transform 0.16s ease;
 }
 
@@ -79,7 +80,7 @@
 }
 
 .quickViewButton strong {
-  font-size: 0.98rem;
+  font-size: 1.08rem;
   line-height: 1.1;
   color: #27498f;
 }
@@ -98,7 +99,7 @@
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 7px;
 }
 
 .pickTag {
@@ -224,11 +225,11 @@
 .headerBar {
   padding: 2px 2px 0;
   display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  white-space: nowrap;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  overflow: visible;
+  white-space: normal;
 }
 
 .headerBar h1,
@@ -237,14 +238,14 @@
 }
 
 .headerBar p {
-  flex: 0 0 auto;
+  color: #5a678c;
 }
 
 .insightChips {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 8px;
-  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .insightChip {
@@ -252,9 +253,9 @@
   border-radius: 999px;
   background: rgba(245, 249, 255, 0.95);
   color: #314573;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  padding: 5px 10px;
+  padding: 6px 11px;
   white-space: nowrap;
 }
 
@@ -272,18 +273,44 @@
 
 .filters {
   display: grid !important;
-  grid-template-columns: minmax(250px, 1.2fr) repeat(3, minmax(170px, 1fr)) minmax(170px, 0.85fr);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   align-items: end;
-  gap: 16px;
-  background: rgba(255, 255, 255, 0.7);
+  gap: 14px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.86), rgba(247, 251, 255, 0.8));
   border: 1px solid rgba(71, 84, 145, 0.14);
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 15px;
   overflow: visible;
+}
+
+.resultMeta {
+  border: 1px solid rgba(71, 84, 145, 0.16);
+  border-radius: 12px;
+  background: rgba(248, 252, 255, 0.88);
+  padding: 10px 12px;
+  display: grid;
+  gap: 4px;
+}
+
+.resultMeta p {
+  margin: 0;
+  color: #334367;
+  font-size: 0.9rem;
 }
 
 .filters label {
   min-width: 0;
+}
+
+.filters label:nth-child(1),
+.filters label:nth-child(2),
+.filters label:nth-child(3) {
+  grid-column: span 2;
+}
+
+.filters label:nth-child(4),
+.filters button {
+  grid-column: span 3;
 }
 
 .filters button {
@@ -312,17 +339,17 @@
 .listWrap {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 22px;
+  gap: 20px;
 }
 
 .hackathonCard {
   border: 1px solid rgba(71, 84, 145, 0.18);
-  border-radius: 20px;
+  border-radius: 18px;
   background: linear-gradient(155deg, rgba(255, 255, 255, 0.94), rgba(244, 249, 255, 0.88));
-  padding: 20px;
+  padding: 18px;
   cursor: pointer;
   display: grid;
-  gap: 14px;
+  gap: 12px;
   align-content: start;
   min-height: 356px;
   transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.15s ease;
@@ -352,7 +379,7 @@
 
 .cardMedia {
   width: 100%;
-  min-height: 80px;
+  min-height: 74px;
   border-radius: 14px;
   border: 1px solid rgba(72, 91, 154, 0.16);
   overflow: hidden;
@@ -417,30 +444,38 @@
 
 .titleCell {
   display: grid;
-  gap: 3px;
+  gap: 4px;
+  min-width: 0;
 }
 
 .titleMain {
   font-weight: 700;
   line-height: 1.33;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .slugHint {
   color: #5d6788;
   font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cardMetaGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
 }
 
 .metaItem {
   border: 1px solid rgba(71, 84, 145, 0.14);
   border-radius: 10px;
   background: rgba(246, 250, 255, 0.9);
-  padding: 10px;
+  padding: 9px 10px;
   display: grid;
   gap: 2px;
 }
@@ -463,8 +498,12 @@
 .cardFooter {
   margin-top: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.cardFooter :global(.button) {
+  width: 100%;
 }
 
 @media (max-width: 1400px) {
@@ -487,8 +526,17 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .filters label,
+  .filters button {
+    grid-column: span 1;
+  }
+
   .filters button {
     grid-column: span 2;
+  }
+
+  .insightChips {
+    margin-left: 0;
   }
 }
 

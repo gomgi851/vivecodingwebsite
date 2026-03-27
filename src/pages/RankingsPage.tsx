@@ -1,4 +1,5 @@
 import { Link, useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
 import { EmptyState, ErrorState, LoadingState } from '../components/StateBlocks'
 import { useAppData } from '../store/AppDataContext'
 import styles from './RankingsPage.module.css'
@@ -19,6 +20,7 @@ function isWithinPeriod(value: string, period: string) {
 
 export function RankingsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const [copiedView, setCopiedView] = useState(false)
   const { loading, error, refresh, leaderboards, hackathons } = useAppData()
   const boardSlug = searchParams.get('board') || 'all'
   const period = searchParams.get('period') || 'all'
@@ -82,9 +84,25 @@ export function RankingsPage() {
     .sort((a, b) => new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime())
 
   const quickBoards = boardOptions.slice(0, 5)
+  const hasActiveFilter = Boolean(keyword.trim()) || boardSlug !== 'all' || period !== 'all' || sortBy !== 'rank'
+  const activeFilterCount =
+    Number(Boolean(keyword.trim())) + Number(boardSlug !== 'all') + Number(period !== 'all') + Number(sortBy !== 'rank')
 
   function resetFilters() {
     setSearchParams({})
+  }
+
+  async function copyCurrentView() {
+    if (typeof window === 'undefined' || typeof navigator === 'undefined' || !navigator.clipboard) return
+    const query = searchParams.toString()
+    const targetUrl = `${window.location.origin}${window.location.pathname}${query ? `?${query}` : ''}`
+    try {
+      await navigator.clipboard.writeText(targetUrl)
+      setCopiedView(true)
+      window.setTimeout(() => setCopiedView(false), 1400)
+    } catch {
+      setCopiedView(false)
+    }
   }
 
   return (
@@ -221,14 +239,52 @@ export function RankingsPage() {
               <option value="latest">최신 제출순</option>
             </select>
           </label>
+          <button className="button ghost align-end" type="button" onClick={resetFilters}>
+            필터 초기화
+          </button>
+          <button className="button secondary align-end" type="button" onClick={copyCurrentView}>
+            {copiedView ? '뷰 링크 복사됨' : '현재 뷰 링크 복사'}
+          </button>
         </section>
+
+        <section className={styles.resultMeta} aria-live="polite">
+          <p>
+            현재 결과 <strong>{entries.length}</strong>개 · 활성 필터 <strong>{activeFilterCount}</strong>개
+          </p>
+          <p className="muted">정렬/기간/보드 조건을 유지한 상태로 공유할 수 있습니다.</p>
+        </section>
+
+        {hasActiveFilter ? (
+          <section className={styles.activeFilters} aria-label="현재 적용 필터">
+            {keyword.trim() ? (
+              <button className={styles.activeFilterChip} type="button" onClick={() => updateQuery('q', '')}>
+                검색: {keyword} ×
+              </button>
+            ) : null}
+            {boardSlug !== 'all' ? (
+              <button className={styles.activeFilterChip} type="button" onClick={() => updateQuery('board', 'all')}>
+                보드: {selectedBoardLabel} ×
+              </button>
+            ) : null}
+            {period !== 'all' ? (
+              <button className={styles.activeFilterChip} type="button" onClick={() => updateQuery('period', 'all')}>
+                기간: {period} ×
+              </button>
+            ) : null}
+            {sortBy !== 'rank' ? (
+              <button className={styles.activeFilterChip} type="button" onClick={() => updateQuery('sort', 'rank')}>
+                정렬: {sortBy === 'score' ? '점수순' : '최신 제출순'} ×
+              </button>
+            ) : null}
+          </section>
+        ) : null}
 
         {top3.length ? (
           <section className={`grid grid-3 ${styles.topGrid}`}>
             {top3.map((entry, idx) => (
               <article
                 key={`${entry.teamName}-${entry.submittedAt}`}
-                className={`panel podium podium-${idx + 1} ${styles.topCard}`}
+                className={`panel cv-auto podium podium-${idx + 1} ${styles.topCard}`}
               >
                 <span className={styles.topRankBadge}>TOP {idx + 1}</span>
                 <p className="metric-label">TOP {idx + 1}</p>
