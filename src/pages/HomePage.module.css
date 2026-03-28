@@ -1,0 +1,298 @@
+﻿.page {
+  --accent: #0a84ff;
+  --accent2: #ff7a1a;
+  --accent3: #1f7a8c;
+  --text: #1e2a3b;
+  --text2: #4d6077;
+  --text3: #70829a;
+  --surface: #ffffff;
+  --border: #d8e1ef;
+  --radius: 8px;
+  --radius2: 12px;
+  --transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: calc(100vh - var(--topbar-height));
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-top: calc(-1 * var(--content-top-gap));
+  padding: 40px 56px 48px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.gridBg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, rgba(10, 132, 255, 0.16) 2px, transparent 2px),
+    linear-gradient(rgba(10, 132, 255, 0.12) 2px, transparent 2px),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 38px,
+      rgba(10, 132, 255, 0.22) 38px 40px,
+      transparent 40px 84px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 30px,
+      rgba(31, 122, 140, 0.18) 30px 32px,
+      transparent 32px 74px
+    ),
+    linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(10, 132, 255, 0.12) 20% 21%,
+      transparent 21% 58%,
+      rgba(31, 122, 140, 0.12) 58% 59%,
+      transparent 59%
+    ),
+    linear-gradient(
+      300deg,
+      transparent 12%,
+      rgba(255, 122, 26, 0.1) 12% 13%,
+      transparent 13% 66%,
+      rgba(10, 132, 255, 0.12) 66% 67%,
+      transparent 67%
+    );
+  background-size: 140px 140px, 140px 140px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.gridBg::before,
+.gridBg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gridBg::before {
+  background-image:
+    linear-gradient(90deg, rgba(10, 132, 255, 0.24) 0 18px, transparent 18px 100%),
+    linear-gradient(rgba(31, 122, 140, 0.2) 0 14px, transparent 14px 100%),
+    linear-gradient(90deg, transparent 0 74%, rgba(10, 132, 255, 0.2) 74% 76%, transparent 76%);
+  background-size: 220px 6px, 6px 190px, 100% 100%;
+  background-position: 8% 24%, 68% 14%, 0 0;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+}
+
+.gridBg::after {
+  background-image:
+    radial-gradient(circle at 12% 24%, rgba(10, 132, 255, 0.36) 0 3px, rgba(10, 132, 255, 0) 4px),
+    radial-gradient(circle at 76% 16%, rgba(31, 122, 140, 0.36) 0 3px, rgba(31, 122, 140, 0) 4px),
+    radial-gradient(circle at 64% 68%, rgba(255, 122, 26, 0.34) 0 3px, rgba(255, 122, 26, 0) 4px),
+    linear-gradient(90deg, rgba(10, 132, 255, 0.16) 0 28%, transparent 28% 72%, rgba(31, 122, 140, 0.16) 72% 100%);
+  opacity: 0.8;
+}
+
+.glow {
+  position: absolute;
+  width: 860px;
+  height: 860px;
+  background: radial-gradient(circle, rgba(10, 132, 255, 0.16) 0%, rgba(31, 122, 140, 0.08) 42%, transparent 72%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hero {
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-emphasis);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  border: 1px solid rgba(10, 132, 255, 0.24);
+  padding: 5px 14px;
+  border-radius: 2px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.tagDot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--accent);
+  animation: pulse 2s infinite;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 112px;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.titleAccent {
+  color: var(--accent);
+}
+
+.sub {
+  font-size: 18px;
+  color: var(--text2);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  max-width: 1180px;
+  margin-top: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  min-height: 268px;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+
+.card:nth-child(1)::before {
+  background: rgba(10, 132, 255, 0.06);
+}
+
+.card:nth-child(2)::before {
+  background: rgba(255, 122, 26, 0.06);
+}
+
+.card:nth-child(3)::before {
+  background: rgba(31, 122, 140, 0.06);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card:nth-child(1):hover {
+  border-color: rgba(10, 132, 255, 0.35);
+}
+
+.card:nth-child(2):hover {
+  border-color: rgba(255, 122, 26, 0.35);
+}
+
+.card:nth-child(3):hover {
+  border-color: rgba(31, 122, 140, 0.35);
+}
+
+.cardIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.card:nth-child(1) .cardIcon {
+  background: rgba(10, 132, 255, 0.12);
+}
+
+.card:nth-child(2) .cardIcon {
+  background: rgba(255, 122, 26, 0.12);
+}
+
+.card:nth-child(3) .cardIcon {
+  background: rgba(31, 122, 140, 0.12);
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.cardDesc {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.cardArrow {
+  font-family: var(--font-emphasis);
+  font-size: 12px;
+  color: var(--text3);
+  transition: color var(--transition);
+}
+
+.card:hover .cardArrow {
+  color: var(--accent);
+}
+
+.card:nth-child(2):hover .cardArrow {
+  color: var(--accent2);
+}
+
+.card:nth-child(3):hover .cardArrow {
+  color: var(--accent3);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+

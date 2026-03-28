@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unified Card Layout 10</title>
+    <style>
+      :root {
+        --bg: #eceff4;
+        --panel: #ffffff;
+        --line: #cdd4e2;
+        --line-strong: #b8c1d4;
+        --text: #1f2a44;
+        --muted: #5f6e8d;
+        --btn: #f5f7fb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif;
+      }
+
+      .wrap {
+        width: min(1700px, calc(100vw - 40px));
+        margin: 20px auto 40px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .intro {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #f8fafe;
+        padding: 14px 16px;
+      }
+
+      .intro h1 {
+        margin: 0 0 6px;
+        font-size: 24px;
+        font-weight: 900;
+      }
+
+      .intro p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .case {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+        padding: 12px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .case h2 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 900;
+      }
+
+      .case p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .card {
+        border: 1px solid var(--line-strong);
+        border-radius: 14px;
+        background: #fff;
+        padding: 12px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .title {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .status {
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        padding: 4px 9px;
+        font-size: 12px;
+        font-weight: 800;
+        background: #f6f8fc;
+      }
+
+      .desc {
+        margin: 0;
+        line-height: 1.4;
+      }
+
+      .info2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .box {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px;
+      }
+
+      .box .k {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .box .v {
+        font-size: 20px;
+        font-weight: 900;
+        margin-top: 5px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tag {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #f5f7fb;
+        padding: 3px 8px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .btn {
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+        background: var(--btn);
+        color: #223358;
+        min-height: 38px;
+        padding: 8px 12px;
+        font-size: 15px;
+        font-weight: 800;
+      }
+
+      .btn.primary {
+        background: #e8eef9;
+      }
+
+      .a1 .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+      }
+
+      .a2 .topline {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+      }
+
+      .a2 .msgIcon {
+        width: 40px;
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+        background: #f4f7fd;
+        display: grid;
+        place-items: center;
+        font-size: 18px;
+        font-weight: 900;
+      }
+
+      .a2 .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .a3 .layout {
+        display: grid;
+        grid-template-columns: 1fr 52px;
+        gap: 10px;
+      }
+
+      .a3 .rail {
+        display: grid;
+        gap: 8px;
+      }
+
+      .a3 .rail button {
+        width: 100%;
+        min-height: 40px;
+      }
+
+      .a4 .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .a4 .split .btn.big {
+        min-height: 86px;
+        font-size: 18px;
+      }
+
+      .a5 .dock {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #f8fafd;
+        padding: 8px;
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 8px;
+      }
+
+      .a6 .cluster {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .a6 .clusterRight {
+        display: flex;
+        gap: 8px;
+      }
+
+      .a6 .clusterRight .btn {
+        width: 42px;
+        padding: 0;
+      }
+
+      .a7 .table {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .a7 .row {
+        display: grid;
+        grid-template-columns: 120px 1fr auto;
+      }
+
+      .a7 .row > div {
+        padding: 8px;
+        border-bottom: 1px solid #e5e9f2;
+      }
+
+      .a7 .row:last-child > div {
+        border-bottom: 0;
+      }
+
+      .a8 .heroAction {
+        border: 1px solid var(--line-strong);
+        border-radius: 12px;
+        padding: 10px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .a8 .heroAction .btn {
+        min-width: 130px;
+      }
+
+      .a9 .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .a9 .step {
+        border: 1px dashed var(--line-strong);
+        border-radius: 10px;
+        padding: 8px;
+        text-align: center;
+      }
+
+      .a10 .wide {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 10px;
+      }
+
+      .a10 .sideActions {
+        display: grid;
+        gap: 8px;
+      }
+
+      .a10 .sideActions .btn {
+        min-height: 44px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="intro">
+        <h1>통합 카드 레이아웃 10안</h1>
+        <p>두 카드(해커톤/팀) 공통 시스템으로 구성. 파란 강조선 없이, 배치와 구조를 크게 바꾼 샘플만 모았습니다.</p>
+      </section>
+
+      <section class="grid">
+        <article class="case a1">
+          <h2>1. 3버튼 일렬형</h2>
+          <p>액션을 한 줄에 모아서 카드 하단을 내비게이션 바로 사용.</p>
+          <div class="card">
+            <div class="top"><h3 class="title">통합 카드</h3><span class="status">모집중</span></div>
+            <p class="desc">해커톤/팀 공통 카드. 액션 3개를 한 줄로 고정.</p>
+            <div class="info2"><div class="box"><div class="k">해커톤</div><div class="v">샘플 5</div></div><div class="box"><div class="k">인원</div><div class="v">4/6</div></div></div>
+            <div class="actions"><button class="btn">연락하기</button><button class="btn">연결 해커톤</button><button class="btn">쪽지</button></div>
+          </div>
+        </article>
+
+        <article class="case a2">
+          <h2>2. 쪽지 아이콘형</h2>
+          <p>주 액션 2개 + 쪽지는 아이콘 버튼으로 축약.</p>
+          <div class="card">
+            <div class="topline"><div class="top"><h3 class="title">통합 카드</h3><span class="status">진행중</span></div><div class="msgIcon">✉</div></div>
+            <p class="desc">텍스트 버튼 과밀을 줄이는 방식.</p>
+            <div class="tags"><span class="tag">Frontend</span><span class="tag">Designer</span></div>
+            <div class="actions"><button class="btn primary">상세/연락</button><button class="btn">연결</button></div>
+          </div>
+        </article>
+
+        <article class="case a3">
+          <h2>3. 우측 액션 레일형</h2>
+          <p>우측 세로 레일에 행동 모음. 본문은 왼쪽 전용.</p>
+          <div class="card">
+            <div class="layout">
+              <div>
+                <div class="top"><h3 class="title">통합 카드</h3><span class="status">마감임박</span></div>
+                <p class="desc">정보 스캔과 행동 동선을 분리.</p>
+                <div class="info2"><div class="box"><div class="k">마감</div><div class="v">D-3</div></div><div class="box"><div class="k">참가</div><div class="v">1/3</div></div></div>
+              </div>
+              <div class="rail"><button class="btn">상세</button><button class="btn">연결</button><button class="btn">✉</button></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="case a4">
+          <h2>4. 좌우 빅 액션형</h2>
+          <p>두 개의 큰 CTA를 카드 중심에 배치.</p>
+          <div class="card">
+            <div class="top"><h3 class="title">통합 카드</h3><span class="status">모집완료</span></div>
+            <p class="desc">연락/연결을 가장 먼저 누르게 만드는 구조.</p>
+            <div class="split"><button class="btn big">연락하기</button><button class="btn big">연결 해커톤</button></div>
+            <button class="btn">쪽지 보내기</button>
+          </div>
+        </article>
+
+        <article class="case a5">
+          <h2>5. 하단 도킹바형</h2>
+          <p>카드 하단에 항상 같은 도킹 액션 바.</p>
+          <div class="card">
+            <div class="top"><h3 class="title">통합 카드</h3><span class="status">진행중</span></div>
+            <p class="desc">정보는 위, 조작은 아래 도킹으로 고정.</p>
+            <div class="info2"><div class="box"><div class="k">보드</div><div class="v">샘플 4</div></div><div class="box"><div class="k">순위</div><div class="v">TOP 2</div></div></div>
+            <div class="dock"><button class="btn">연락</button><button class="btn">연결</button><button class="btn">✉</button></div>
+          </div>
+        </article>
+
+        <article class="case a6">
+          <h2>6. 클러스터 헤더형</h2>
+          <p>제목 라인에서 액션을 바로 수행.</p>
+          <div class="card">
+            <div class="cluster"><h3 class="title">통합 카드</h3><div class="clusterRight"><button class="btn">연결</button><button class="btn">✉</button></div></div>
+            <p class="desc">상단 한 줄에서 빠른 액션 처리.</p>
+            <div class="tags"><span class="tag">LLM</span><span class="tag">Compression</span><span class="tag">Batch2</span></div>
+            <button class="btn primary">주요 액션 실행</button>
+          </div>
+        </article>
+
+        <article class="case a7">
+          <h2>7. 테이블 행 액션형</h2>
+          <p>정보를 행으로 보여주고 각 행 오른쪽에서 바로 액션.</p>
+          <div class="card">
+            <div class="top"><h3 class="title">통합 카드</h3><span class="status">진행중</span></div>
+            <div class="table">
+              <div class="row"><div>해커톤</div><div>긴급 인수인계 [샘플 5]</div><div><button class="btn">상세</button></div></div>
+              <div class="row"><div>팀 상태</div><div>4/6명 모집중</div><div><button class="btn">연락</button></div></div>
+              <div class="row"><div>메시지</div><div>바로 전달</div><div><button class="btn">✉</button></div></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="case a8">
+          <h2>8. 히어로 액션형</h2>
+          <p>설명보다 CTA를 먼저 보여주는 구조.</p>
+          <div class="card">
+            <div class="heroAction"><div><strong>지금 바로 팀 연결 진행</strong><br /><small style="color:#5f6e8d">현재 조건에 맞는 카드입니다.</small></div><button class="btn primary">연결 시작</button></div>
+            <div class="top"><h3 class="title">통합 카드</h3><span class="status">추천</span></div>
+            <div class="actions" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn">상세 보기</button><button class="btn">쪽지 보내기</button></div>
+          </div>
+        </article>
+
+        <article class="case a9">
+          <h2>9. 단계형 액션 플로우</h2>
+          <p>버튼 대신 단계 플로우를 따라가게 설계.</p>
+          <div class="card">
+            <div class="top"><h3 class="title">통합 카드</h3><span class="status">플로우</span></div>
+            <div class="steps"><div class="step">1. 보기</div><div class="step">2. 연결</div><div class="step">3. 쪽지</div></div>
+            <p class="desc">사용자가 순서대로 행동하게 유도.</p>
+            <button class="btn primary">지금 단계 시작</button>
+          </div>
+        </article>
+
+        <article class="case a10">
+          <h2>10. 좌측 고정 액션형</h2>
+          <p>좌측에 액션, 우측에 콘텐츠를 분리한 극단 배치.</p>
+          <div class="card">
+            <div class="wide">
+              <div class="sideActions"><button class="btn">연락</button><button class="btn">연결</button><button class="btn">✉</button></div>
+              <div>
+                <div class="top"><h3 class="title">통합 카드</h3><span class="status">실험안</span></div>
+                <p class="desc">왼쪽은 행동, 오른쪽은 정보로 완전 분리.</p>
+                <div class="info2"><div class="box"><div class="k">해커톤</div><div class="v">샘플 3</div></div><div class="box"><div class="k">인원</div><div class="v">3/3</div></div></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

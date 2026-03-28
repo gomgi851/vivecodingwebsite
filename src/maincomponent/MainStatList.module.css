@@ -1,0 +1,30 @@
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--ui-info-border);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(247, 250, 255, 0.95), rgba(241, 246, 255, 0.88));
+  padding: 9px 10px;
+  color: var(--ui-info-text);
+  font-size: 0.82rem;
+}
+
+.label {
+  color: var(--ui-info-text);
+}
+
+.value {
+  color: var(--ui-info-strong);
+  font-weight: 700;
+}
