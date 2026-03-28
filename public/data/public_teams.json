@@ -1,0 +1,327 @@
+[
+  {
+    "teamCode": "T-ALPHA",
+    "hackathonSlug": "aimers-8-model-lite",
+    "name": "Team Alpha",
+    "isOpen": true,
+    "memberCount": 3,
+    "lookingFor": [
+      "Backend",
+      "ML Engineer"
+    ],
+    "intro": "추론 최적화/경량화 실험을 함께 진행할 팀원을 찾습니다.",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example1"
+    },
+    "createdAt": "2026-02-20T11:00:00+09:00"
+  },
+  {
+    "teamCode": "T-BETA",
+    "hackathonSlug": "monthly-vibe-coding-2026-02",
+    "name": "PromptRunners",
+    "isOpen": true,
+    "memberCount": 1,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "프롬프트 품질 점수화 + 개선 가이드 UX를 기획합니다.",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example2"
+    },
+    "createdAt": "2026-02-18T18:30:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-01",
+    "hackathonSlug": "daker-handover-2026-03",
+    "name": "404found",
+    "isOpen": true,
+    "memberCount": 3,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "명세서 기반으로 기본 기능을 빠르게 완성하고 UX 확장을 노립니다.",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example3"
+    },
+    "createdAt": "2026-03-04T11:00:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-02",
+    "hackathonSlug": "daker-handover-2026-03",
+    "name": "LGTM",
+    "isOpen": false,
+    "memberCount": 5,
+    "lookingFor": [],
+    "intro": "기획서-구현-문서화를 깔끔하게 맞추는 방향으로 진행합니다.",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example4"
+    },
+    "createdAt": "2026-03-05T09:20:00+09:00"
+  },
+  {
+    "teamCode": "T-ALPHA-X2",
+    "hackathonSlug": "aimers-8-model-lite-x2",
+    "name": "Team Alpha 2",
+    "isOpen": true,
+    "memberCount": 4,
+    "lookingFor": [
+      "Backend",
+      "ML Engineer"
+    ],
+    "intro": "추론 최적화/경량화 실험을 함께 진행할 팀원을 찾습니다. (배치 2)",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example1?batch=2"
+    },
+    "createdAt": "2026-03-06T02:00:00+09:00"
+  },
+  {
+    "teamCode": "T-BETA-X2",
+    "hackathonSlug": "monthly-vibe-coding-2026-02-x2",
+    "name": "PromptRunners 2",
+    "isOpen": true,
+    "memberCount": 2,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "프롬프트 품질 점수화 + 개선 가이드 UX를 기획합니다. (배치 2)",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example2?batch=2"
+    },
+    "createdAt": "2026-03-04T09:30:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-01-X2",
+    "hackathonSlug": "daker-handover-2026-03-x2",
+    "name": "404found 2",
+    "isOpen": true,
+    "memberCount": 4,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "명세서 기반으로 기본 기능을 빠르게 완성하고 UX 확장을 노립니다. (배치 2)",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example3?batch=2"
+    },
+    "createdAt": "2026-03-18T02:00:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-02-X2",
+    "hackathonSlug": "daker-handover-2026-03-x2",
+    "name": "LGTM 2",
+    "isOpen": true,
+    "memberCount": 6,
+    "lookingFor": [],
+    "intro": "기획서-구현-문서화를 깔끔하게 맞추는 방향으로 진행합니다. (배치 2)",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example4?batch=2"
+    },
+    "createdAt": "2026-03-19T00:20:00+09:00"
+  },
+  {
+    "teamCode": "T-ALPHA-X3",
+    "hackathonSlug": "aimers-8-model-lite-x3",
+    "name": "Team Alpha 3",
+    "isOpen": true,
+    "memberCount": 2,
+    "lookingFor": [
+      "Backend",
+      "ML Engineer"
+    ],
+    "intro": "추론 최적화/경량화 실험을 함께 진행할 팀원을 찾습니다. (배치 3)",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example1?batch=3"
+    },
+    "createdAt": "2026-03-20T02:00:00+09:00"
+  },
+  {
+    "teamCode": "T-BETA-X3",
+    "hackathonSlug": "monthly-vibe-coding-2026-02-x3",
+    "name": "PromptRunners 3",
+    "isOpen": true,
+    "memberCount": 1,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "프롬프트 품질 점수화 + 개선 가이드 UX를 기획합니다. (배치 3)",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example2?batch=3"
+    },
+    "createdAt": "2026-03-18T09:30:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-01-X3",
+    "hackathonSlug": "daker-handover-2026-03-x3",
+    "name": "404found 3",
+    "isOpen": true,
+    "memberCount": 2,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "명세서 기반으로 기본 기능을 빠르게 완성하고 UX 확장을 노립니다. (배치 3)",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example3?batch=3"
+    },
+    "createdAt": "2026-04-01T02:00:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-02-X3",
+    "hackathonSlug": "daker-handover-2026-03-x3",
+    "name": "LGTM 3",
+    "isOpen": false,
+    "memberCount": 4,
+    "lookingFor": [],
+    "intro": "기획서-구현-문서화를 깔끔하게 맞추는 방향으로 진행합니다. (배치 3)",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example4?batch=3"
+    },
+    "createdAt": "2026-04-02T00:20:00+09:00"
+  },
+  {
+    "teamCode": "T-ALPHA-X4",
+    "hackathonSlug": "aimers-8-model-lite-x4",
+    "name": "Team Alpha 4",
+    "isOpen": true,
+    "memberCount": 3,
+    "lookingFor": [
+      "Backend",
+      "ML Engineer"
+    ],
+    "intro": "추론 최적화/경량화 실험을 함께 진행할 팀원을 찾습니다. (배치 4)",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example1?batch=4"
+    },
+    "createdAt": "2026-04-03T02:00:00+09:00"
+  },
+  {
+    "teamCode": "T-BETA-X4",
+    "hackathonSlug": "monthly-vibe-coding-2026-02-x4",
+    "name": "PromptRunners 4",
+    "isOpen": true,
+    "memberCount": 1,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "프롬프트 품질 점수화 + 개선 가이드 UX를 기획합니다. (배치 4)",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example2?batch=4"
+    },
+    "createdAt": "2026-04-01T09:30:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-01-X4",
+    "hackathonSlug": "daker-handover-2026-03-x4",
+    "name": "404found 4",
+    "isOpen": true,
+    "memberCount": 3,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "명세서 기반으로 기본 기능을 빠르게 완성하고 UX 확장을 노립니다. (배치 4)",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example3?batch=4"
+    },
+    "createdAt": "2026-04-15T02:00:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-02-X4",
+    "hackathonSlug": "daker-handover-2026-03-x4",
+    "name": "LGTM 4",
+    "isOpen": true,
+    "memberCount": 5,
+    "lookingFor": [],
+    "intro": "기획서-구현-문서화를 깔끔하게 맞추는 방향으로 진행합니다. (배치 4)",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example4?batch=4"
+    },
+    "createdAt": "2026-04-16T00:20:00+09:00"
+  },
+  {
+    "teamCode": "T-ALPHA-X5",
+    "hackathonSlug": "aimers-8-model-lite-x5",
+    "name": "Team Alpha 5",
+    "isOpen": true,
+    "memberCount": 4,
+    "lookingFor": [
+      "Backend",
+      "ML Engineer"
+    ],
+    "intro": "추론 최적화/경량화 실험을 함께 진행할 팀원을 찾습니다. (배치 5)",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example1?batch=5"
+    },
+    "createdAt": "2026-04-17T02:00:00+09:00"
+  },
+  {
+    "teamCode": "T-BETA-X5",
+    "hackathonSlug": "monthly-vibe-coding-2026-02-x5",
+    "name": "PromptRunners 5",
+    "isOpen": true,
+    "memberCount": 2,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "프롬프트 품질 점수화 + 개선 가이드 UX를 기획합니다. (배치 5)",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example2?batch=5"
+    },
+    "createdAt": "2026-04-15T09:30:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-01-X5",
+    "hackathonSlug": "daker-handover-2026-03-x5",
+    "name": "404found 5",
+    "isOpen": true,
+    "memberCount": 4,
+    "lookingFor": [
+      "Frontend",
+      "Designer"
+    ],
+    "intro": "명세서 기반으로 기본 기능을 빠르게 완성하고 UX 확장을 노립니다. (배치 5)",
+    "contact": {
+      "type": "link",
+      "url": "https://open.kakao.com/o/example3?batch=5"
+    },
+    "createdAt": "2026-04-29T02:00:00+09:00"
+  },
+  {
+    "teamCode": "T-HANDOVER-02-X5",
+    "hackathonSlug": "daker-handover-2026-03-x5",
+    "name": "LGTM 5",
+    "isOpen": false,
+    "memberCount": 6,
+    "lookingFor": [],
+    "intro": "기획서-구현-문서화를 깔끔하게 맞추는 방향으로 진행합니다. (배치 5)",
+    "contact": {
+      "type": "link",
+      "url": "https://forms.gle/example4?batch=5"
+    },
+    "createdAt": "2026-04-30T00:20:00+09:00"
+  }
+]

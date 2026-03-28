@@ -1,0 +1,334 @@
+[
+  {
+    "slug": "aimers-8-model-lite",
+    "title": "Aimers 8기 : 모델 경량화 온라인 해커톤",
+    "status": "ended",
+    "tags": [
+      "LLM",
+      "Compression",
+      "vLLM"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/aimers8.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-02-25T10:00:00+09:00",
+      "endAt": "2026-02-26T10:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/aimers-8-model-lite",
+      "rules": "https://example.com/public/rules/aimers8",
+      "faq": "https://example.com/public/faq/aimers8"
+    }
+  },
+  {
+    "slug": "monthly-vibe-coding-2026-02",
+    "title": "월간 해커톤 : 바이브 코딩 개선 AI 아이디어 공모전 (2026.02)",
+    "status": "ongoing",
+    "tags": [
+      "Idea",
+      "GenAI",
+      "Workflow"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/vibe202602.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-03-03T10:00:00+09:00",
+      "endAt": "2026-03-09T10:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/monthly-vibe-coding-2026-02",
+      "rules": "https://example.com/public/rules/vibe202602",
+      "faq": "https://example.com/public/faq/vibe202602"
+    }
+  },
+  {
+    "slug": "daker-handover-2026-03",
+    "title": "긴급 인수인계 해커톤: 명세서만 보고 구현하라",
+    "status": "upcoming",
+    "tags": [
+      "VibeCoding",
+      "Web",
+      "Vercel",
+      "Handover"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/daker-handover-202603.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-03-30T10:00:00+09:00",
+      "endAt": "2026-04-27T10:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/daker-handover-2026-03",
+      "rules": "https://example.com/public/rules/daker-handover-202603",
+      "faq": "https://example.com/public/faq/daker-handover-202603"
+    }
+  },
+  {
+    "slug": "aimers-8-model-lite-x2",
+    "title": "Aimers 8기 : 모델 경량화 온라인 해커톤 [샘플 2]",
+    "status": "ended",
+    "tags": [
+      "LLM",
+      "Compression",
+      "vLLM",
+      "Batch2"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/aimers8.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-03-11T01:00:00+09:00",
+      "endAt": "2026-03-12T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/aimers-8-model-lite-x2",
+      "rules": "https://example.com/public/rules/aimers8/x2",
+      "faq": "https://example.com/public/faq/aimers8/x2"
+    }
+  },
+  {
+    "slug": "monthly-vibe-coding-2026-02-x2",
+    "title": "월간 해커톤 : 바이브 코딩 개선 AI 아이디어 공모전 (2026.02) [샘플 2]",
+    "status": "ongoing",
+    "tags": [
+      "Idea",
+      "GenAI",
+      "Workflow",
+      "Batch2"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/vibe202602.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-03-17T01:00:00+09:00",
+      "endAt": "2026-03-23T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/monthly-vibe-coding-2026-02-x2",
+      "rules": "https://example.com/public/rules/vibe202602/x2",
+      "faq": "https://example.com/public/faq/vibe202602/x2"
+    }
+  },
+  {
+    "slug": "daker-handover-2026-03-x2",
+    "title": "긴급 인수인계 해커톤: 명세서만 보고 구현하라 [샘플 2]",
+    "status": "upcoming",
+    "tags": [
+      "VibeCoding",
+      "Web",
+      "Vercel",
+      "Handover",
+      "Batch2"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/daker-handover-202603.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-04-13T01:00:00+09:00",
+      "endAt": "2026-05-11T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/daker-handover-2026-03-x2",
+      "rules": "https://example.com/public/rules/daker-handover-202603/x2",
+      "faq": "https://example.com/public/faq/daker-handover-202603/x2"
+    }
+  },
+  {
+    "slug": "aimers-8-model-lite-x3",
+    "title": "Aimers 8기 : 모델 경량화 온라인 해커톤 [샘플 3]",
+    "status": "ended",
+    "tags": [
+      "LLM",
+      "Compression",
+      "vLLM",
+      "Batch3"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/aimers8.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-03-25T01:00:00+09:00",
+      "endAt": "2026-03-26T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/aimers-8-model-lite-x3",
+      "rules": "https://example.com/public/rules/aimers8/x3",
+      "faq": "https://example.com/public/faq/aimers8/x3"
+    }
+  },
+  {
+    "slug": "monthly-vibe-coding-2026-02-x3",
+    "title": "월간 해커톤 : 바이브 코딩 개선 AI 아이디어 공모전 (2026.02) [샘플 3]",
+    "status": "ongoing",
+    "tags": [
+      "Idea",
+      "GenAI",
+      "Workflow",
+      "Batch3"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/vibe202602.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-03-31T01:00:00+09:00",
+      "endAt": "2026-04-06T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/monthly-vibe-coding-2026-02-x3",
+      "rules": "https://example.com/public/rules/vibe202602/x3",
+      "faq": "https://example.com/public/faq/vibe202602/x3"
+    }
+  },
+  {
+    "slug": "daker-handover-2026-03-x3",
+    "title": "긴급 인수인계 해커톤: 명세서만 보고 구현하라 [샘플 3]",
+    "status": "upcoming",
+    "tags": [
+      "VibeCoding",
+      "Web",
+      "Vercel",
+      "Handover",
+      "Batch3"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/daker-handover-202603.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-04-27T01:00:00+09:00",
+      "endAt": "2026-05-25T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/daker-handover-2026-03-x3",
+      "rules": "https://example.com/public/rules/daker-handover-202603/x3",
+      "faq": "https://example.com/public/faq/daker-handover-202603/x3"
+    }
+  },
+  {
+    "slug": "aimers-8-model-lite-x4",
+    "title": "Aimers 8기 : 모델 경량화 온라인 해커톤 [샘플 4]",
+    "status": "ended",
+    "tags": [
+      "LLM",
+      "Compression",
+      "vLLM",
+      "Batch4"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/aimers8.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-04-08T01:00:00+09:00",
+      "endAt": "2026-04-09T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/aimers-8-model-lite-x4",
+      "rules": "https://example.com/public/rules/aimers8/x4",
+      "faq": "https://example.com/public/faq/aimers8/x4"
+    }
+  },
+  {
+    "slug": "monthly-vibe-coding-2026-02-x4",
+    "title": "월간 해커톤 : 바이브 코딩 개선 AI 아이디어 공모전 (2026.02) [샘플 4]",
+    "status": "ongoing",
+    "tags": [
+      "Idea",
+      "GenAI",
+      "Workflow",
+      "Batch4"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/vibe202602.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-04-14T01:00:00+09:00",
+      "endAt": "2026-04-20T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/monthly-vibe-coding-2026-02-x4",
+      "rules": "https://example.com/public/rules/vibe202602/x4",
+      "faq": "https://example.com/public/faq/vibe202602/x4"
+    }
+  },
+  {
+    "slug": "daker-handover-2026-03-x4",
+    "title": "긴급 인수인계 해커톤: 명세서만 보고 구현하라 [샘플 4]",
+    "status": "upcoming",
+    "tags": [
+      "VibeCoding",
+      "Web",
+      "Vercel",
+      "Handover",
+      "Batch4"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/daker-handover-202603.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-05-11T01:00:00+09:00",
+      "endAt": "2026-06-08T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/daker-handover-2026-03-x4",
+      "rules": "https://example.com/public/rules/daker-handover-202603/x4",
+      "faq": "https://example.com/public/faq/daker-handover-202603/x4"
+    }
+  },
+  {
+    "slug": "aimers-8-model-lite-x5",
+    "title": "Aimers 8기 : 모델 경량화 온라인 해커톤 [샘플 5]",
+    "status": "ended",
+    "tags": [
+      "LLM",
+      "Compression",
+      "vLLM",
+      "Batch5"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/aimers8.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-04-22T01:00:00+09:00",
+      "endAt": "2026-04-23T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/aimers-8-model-lite-x5",
+      "rules": "https://example.com/public/rules/aimers8/x5",
+      "faq": "https://example.com/public/faq/aimers8/x5"
+    }
+  },
+  {
+    "slug": "monthly-vibe-coding-2026-02-x5",
+    "title": "월간 해커톤 : 바이브 코딩 개선 AI 아이디어 공모전 (2026.02) [샘플 5]",
+    "status": "ongoing",
+    "tags": [
+      "Idea",
+      "GenAI",
+      "Workflow",
+      "Batch5"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/vibe202602.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-04-28T01:00:00+09:00",
+      "endAt": "2026-05-04T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/monthly-vibe-coding-2026-02-x5",
+      "rules": "https://example.com/public/rules/vibe202602/x5",
+      "faq": "https://example.com/public/faq/vibe202602/x5"
+    }
+  },
+  {
+    "slug": "daker-handover-2026-03-x5",
+    "title": "긴급 인수인계 해커톤: 명세서만 보고 구현하라 [샘플 5]",
+    "status": "upcoming",
+    "tags": [
+      "VibeCoding",
+      "Web",
+      "Vercel",
+      "Handover",
+      "Batch5"
+    ],
+    "thumbnailUrl": "https://example.com/public/img/daker-handover-202603.png",
+    "period": {
+      "timezone": "Asia/Seoul",
+      "submissionDeadlineAt": "2026-05-25T01:00:00+09:00",
+      "endAt": "2026-06-22T01:00:00+09:00"
+    },
+    "links": {
+      "detail": "/hackathons/daker-handover-2026-03-x5",
+      "rules": "https://example.com/public/rules/daker-handover-202603/x5",
+      "faq": "https://example.com/public/faq/daker-handover-202603/x5"
+    }
+  }
+]

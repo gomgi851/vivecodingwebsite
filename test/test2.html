@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Concept Lab - test2</title>
+    <style>
+      :root {
+        --bg: #eef1f6;
+        --panel: #ffffff;
+        --line: #d2d9e7;
+        --line-strong: #bcc6da;
+        --text: #1f2b44;
+        --muted: #60708f;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif;
+      }
+      .wrap {
+        width: min(1700px, calc(100vw - 48px));
+        margin: 24px auto 40px;
+        display: grid;
+        gap: 16px;
+      }
+      .hero {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: #f9fbff;
+        padding: 16px;
+      }
+      .hero h1 {
+        margin: 0 0 6px;
+        font-size: 26px;
+        font-weight: 900;
+      }
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--panel);
+        overflow: hidden;
+        display: grid;
+      }
+      .top {
+        min-height: 96px;
+        padding: 12px;
+        position: relative;
+      }
+      .body {
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+      }
+      .title {
+        margin: 0;
+        font-size: 33px;
+        font-weight: 900;
+        line-height: 1.2;
+      }
+      .desc {
+        margin: 0;
+        color: #30405f;
+        line-height: 1.45;
+      }
+      .chip {
+        width: fit-content;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        background: #f4f7fd;
+      }
+      .pillRow {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .kpis {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .kpi {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px;
+      }
+      .kpi .k { font-size: 12px; color: var(--muted); }
+      .kpi .v { margin-top: 4px; font-size: 22px; font-weight: 900; }
+      .btn {
+        border: 1px solid #b2bfd8;
+        border-radius: 10px;
+        background: #f5f8fe;
+        color: #203057;
+        min-height: 40px;
+        padding: 8px 12px;
+        font-weight: 800;
+        font-size: 15px;
+      }
+      .btn.primary {
+        background: #e6edfa;
+      }
+
+      .v1 .top {
+        background: linear-gradient(135deg, #92b8e9, #5a69dc);
+      }
+      .v1 .badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(24, 41, 86, 0.55);
+        color: #fff;
+        border-radius: 8px;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .v1 .dday {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: inline-flex;
+        gap: 6px;
+      }
+      .v1 .dday span {
+        background: rgba(24, 41, 86, 0.55);
+        color: #fff;
+        border-radius: 8px;
+        padding: 4px 8px;
+        font-weight: 800;
+      }
+
+      .v2 .top {
+        background: linear-gradient(135deg, #8e949f, #6e7888);
+      }
+      .v2 .floatingTag {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: #d08f2d;
+        color: #fff;
+        padding: 5px 12px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .v2 .lock {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: #f3f5f9;
+        display: grid;
+        place-items: center;
+        font-size: 24px;
+      }
+
+      .v3 .top {
+        background: #121823;
+      }
+      .v3 .top .statusLine {
+        color: #e8eefb;
+        font-weight: 800;
+        font-size: 13px;
+      }
+      .v3 .progress {
+        height: 10px;
+        border-radius: 999px;
+        background: #ebeff7;
+        overflow: hidden;
+      }
+      .v3 .bar {
+        width: 62%;
+        height: 100%;
+        background: #6da582;
+      }
+      .v3 .actions {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+      }
+
+      .v4 .top {
+        background: #f6f4ef;
+      }
+      .v4 .reward {
+        border: 1px dashed #c8a676;
+        border-radius: 10px;
+        padding: 8px;
+        background: #fff9ef;
+      }
+      .v4 .reward b {
+        font-size: 30px;
+      }
+      .v4 .actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .v5 .top {
+        background: #f0f4f1;
+      }
+      .v5 .matrix {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .v5 .matrix .box {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px;
+        text-align: center;
+      }
+      .v5 .matrix .v {
+        font-weight: 900;
+        font-size: 20px;
+      }
+
+      .v6 .top {
+        background: #faf3f5;
+      }
+      .v6 .side {
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        gap: 10px;
+      }
+      .v6 .vertical {
+        display: grid;
+        gap: 8px;
+      }
+      .v6 .vertical .btn {
+        min-height: 40px;
+        padding: 0;
+      }
+
+      .v7 .top {
+        background: #f2f4fa;
+      }
+      .v7 .timeline {
+        border-left: 2px solid #cad3e5;
+        padding-left: 10px;
+        display: grid;
+        gap: 7px;
+      }
+      .v7 .t {
+        font-size: 13px;
+      }
+      .v7 .t b {
+        display: inline-block;
+        min-width: 46px;
+      }
+
+      .v8 .top {
+        background: #f3f8fa;
+      }
+      .v8 .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .v8 .split .btn {
+        min-height: 66px;
+        font-size: 18px;
+      }
+
+      .v9 .top {
+        background: #f7f7f7;
+      }
+      .v9 .topBoard {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+      }
+      .v9 .topBoard b {
+        font-size: 26px;
+      }
+      .v9 .mini {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .v10 .top {
+        background: #edf0f8;
+      }
+      .v10 .footerDock {
+        border-top: 1px solid #dde3f0;
+        padding-top: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 44px;
+        gap: 8px;
+      }
+      .v10 .iconBtn {
+        border: 1px solid #b2bfd8;
+        border-radius: 10px;
+        background: #f5f8fe;
+        font-size: 18px;
+        font-weight: 900;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="hero">
+        <h1>test2 - 구성 요소 변화 중심 카드 10안</h1>
+        <p>색만 바꾼 안이 아니라, 정보 구조와 액션 위치를 다르게 설계한 카드 실험안입니다.</p>
+      </section>
+
+      <section class="grid">
+        <article class="card v1">
+          <div class="top"><div class="badge">모집중</div><div class="dday"><span>D-2</span><span>⤴</span></div></div>
+          <div class="body"><span class="chip">월간 해커톤</span><h2 class="title">긴급 인수인계</h2><p class="desc">한 줄 소개를 두 줄까지만 노출하고 참여 버튼만 강하게 둡니다.</p><button class="btn primary">참가 신청하기</button></div>
+        </article>
+
+        <article class="card v2">
+          <div class="top"><div class="floatingTag">월간 해커톤 • 긴급 인수인계</div></div>
+          <div class="body"><div class="pillRow"><span class="chip">완료</span></div><div class="lock">🔒</div><h2 class="title">비공개 팀</h2><p class="desc">잠금형 카드. 초대 필요 액션만 노출합니다.</p><div class="actions"><button class="btn">상세 보기</button><button class="btn">초대 요청</button></div></div>
+        </article>
+
+        <article class="card v3">
+          <div class="top"><div class="statusLine">RUNNING BOARD · 62% 진행</div></div>
+          <div class="body"><h2 class="title">스프린트형 카드</h2><p class="desc">현재 진행률/상태를 먼저 보여주고 바로 액션으로 유도.</p><div class="progress"><div class="bar"></div></div><div class="actions"><button class="btn primary">현재 보드 이동</button><button class="btn">✉</button></div></div>
+        </article>
+
+        <article class="card v4">
+          <div class="top"></div>
+          <div class="body"><h2 class="title">리워드 중심 카드</h2><div class="reward"><small>총 상금</small><br /><b>100만원</b></div><p class="desc">보상 정보를 중심으로 참여를 유도하는 타입.</p><div class="actions"><button class="btn">규정 보기</button><button class="btn primary">참여</button></div></div>
+        </article>
+
+        <article class="card v5">
+          <div class="top"></div>
+          <div class="body"><h2 class="title">숫자 매트릭스 카드</h2><div class="matrix"><div class="box"><div>팀</div><div class="v">362</div></div><div class="box"><div>조회</div><div class="v">981</div></div><div class="box"><div>채팅</div><div class="v">43</div></div></div><button class="btn primary">매칭 시작</button></div>
+        </article>
+
+        <article class="card v6">
+          <div class="top"></div>
+          <div class="body side"><div class="vertical"><button class="btn">연락</button><button class="btn">연결</button><button class="btn">✉</button></div><div><h2 class="title">좌측 액션 세로형</h2><p class="desc">행동 버튼을 고정 열로 두고 우측에 내용만 표시.</p><div class="kpis"><div class="kpi"><div class="k">인원</div><div class="v">3/3</div></div><div class="kpi"><div class="k">마감</div><div class="v">D-3</div></div></div></div></div>
+        </article>
+
+        <article class="card v7">
+          <div class="top"></div>
+          <div class="body"><h2 class="title">타임라인 카드</h2><div class="timeline"><div class="t"><b>등록</b> 03.03</div><div class="t"><b>모집</b> 03.10 종료</div><div class="t"><b>제출</b> 03.25 마감</div></div><button class="btn">스케줄 보기</button></div>
+        </article>
+
+        <article class="card v8">
+          <div class="top"></div>
+          <div class="body"><h2 class="title">대형 듀얼 CTA</h2><p class="desc">카드 중앙에서 바로 선택하도록 두 개의 큰 버튼만 남김.</p><div class="split"><button class="btn">팀 찾기</button><button class="btn primary">바로 참가</button></div><div class="pillRow"><span class="chip">Frontend</span><span class="chip">Designer</span></div></div>
+        </article>
+
+        <article class="card v9">
+          <div class="top"></div>
+          <div class="body"><div class="topBoard"><div><div class="mini">현재 순위</div><b>TOP 2</b></div><span class="chip">88.9점</span></div><h2 class="title">랭킹 보드형</h2><p class="desc">점수와 순위를 최상단 보드로 분리한 방식.</p><button class="btn">상세 랭킹</button></div>
+        </article>
+
+        <article class="card v10">
+          <div class="top"></div>
+          <div class="body"><h2 class="title">하단 도킹 액션</h2><p class="desc">본문은 읽기 전용, 액션은 하단 바에서만 수행.</p><div class="kpis"><div class="kpi"><div class="k">해커톤</div><div class="v">샘플 5</div></div><div class="kpi"><div class="k">참가자</div><div class="v">6/6</div></div></div><div class="footerDock"><button class="btn">연락</button><button class="btn">연결</button><button class="iconBtn">✉</button></div></div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

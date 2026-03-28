@@ -1,0 +1,33 @@
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  border: 1px solid rgba(79, 94, 165, 0.24);
+  border-radius: 999px;
+  background: rgba(243, 248, 255, 0.88);
+  color: #344269;
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 6px 11px;
+}
+
+.success {
+  border-color: rgba(16, 118, 76, 0.3);
+  background: rgba(225, 246, 236, 0.9);
+  color: #176c45;
+}
+
+.warning {
+  border-color: rgba(178, 87, 20, 0.3);
+  background: rgba(255, 241, 226, 0.92);
+  color: #934f10;
+}
+
+.accent {
+  border-color: rgba(56, 89, 170, 0.4);
+  background: rgba(234, 242, 255, 0.96);
+  color: #254b94;
+}

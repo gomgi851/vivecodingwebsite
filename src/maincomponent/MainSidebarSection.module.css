@@ -1,0 +1,29 @@
+.section {
+  border: 1px solid var(--ui-card-border);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 255, 0.9));
+  box-shadow: var(--ui-card-shadow);
+  padding: 15px 15px 18px;
+  position: relative;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #2b61df, #6f8ff2);
+  opacity: 0.9;
+}
+
+.title {
+  margin: 0 0 12px;
+  color: var(--ui-card-title);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
